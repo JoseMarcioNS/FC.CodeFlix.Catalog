@@ -1,4 +1,6 @@
-﻿namespace FC.CodeFlix.Catalog.Application.UseCases.Category.Create
+﻿using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
+
+namespace FC.CodeFlix.Catalog.Application.UseCases.Category.Create
 {
     public class CreateCategoryOuput
     {
@@ -16,5 +18,16 @@
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public static CreateCategoryOuput FromCategory(DomainEntity.Category category)
+        {
+           return new CreateCategoryOuput(
+                category.Id,
+                category.Name,
+                category.Description,
+                category.IsActive,
+                category.CreatedAt);
+        }
     }
+      
 }

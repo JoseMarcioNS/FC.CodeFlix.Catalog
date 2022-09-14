@@ -24,7 +24,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory
             var useCase = new useCase.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
             var input = _fixture.GetCreateCategoryInput();
 
-            var output = await useCase.Handler(input, CancellationToken.None);
+            var output = await useCase.Handle(input, CancellationToken.None);
             repositoryMock.Verify(repository => repository.Insert(It.IsAny<Category>(), CancellationToken.None), Times.Once);
             unitOfWorkMock.Verify(ufw => ufw.Commit(CancellationToken.None), Times.Once);
 
@@ -48,7 +48,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             var useCase = new useCase.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
-            Func<Task> task = async () => await useCase.Handler(input, CancellationToken.None);
+            Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
 
             await task.Should().ThrowAsync<EntityValidationExeption>().WithMessage(exeptionMessage);
         }
