@@ -1,5 +1,5 @@
 ﻿using FC.CodeFlix.Catalog.Domain.Exeptions;
-using FluentAssertions;
+
 
 namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
 {
@@ -61,9 +61,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
 
             Action action = () => new DomainEntity.Category(invalidName!, validCategory.Description);
 
-            var exeption = Assert.Throws<EntityValidationExeption>(action);
-
-            action.Should().Throw<EntityValidationExeption>().WithMessage("Name should not be null or empty");
+           action.Should().Throw<EntityValidationExeption>().WithMessage("Name should not be null or empty");
 
         }
         [Theory(DisplayName = nameof(InstantiateErrorwhenNameLessThan3Characters))]
