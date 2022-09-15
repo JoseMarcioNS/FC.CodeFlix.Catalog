@@ -3,7 +3,7 @@ using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Domain.Interfaces;
 using FC.CodeFlix.Catalog.UnitTests.Common;
 
-namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory
+namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Create
 {
     public class CreateCategoryTestFixture : BaseFixture
     {

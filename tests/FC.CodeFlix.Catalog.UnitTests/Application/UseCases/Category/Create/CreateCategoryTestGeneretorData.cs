@@ -1,6 +1,5 @@
-﻿namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory
+﻿namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Create
 {
-
     public class CreateCategoryTestGeneretorData
     {
         public static IEnumerable<object[]> GetInvalidInputs(int times)
@@ -33,13 +32,13 @@
                     case 5:
                         var inputDEscriptionMaxLeght = fixture.GetInputInvalidDescriptionMaxLeght();
                         invalidInputs.Add(new object[] { inputDEscriptionMaxLeght, "Description should not be greater than 10000 characters long" });
-                        
+
                         break;
                 }
                 if (switchCase == totalInvalidCases)
                     switchCase = 1;
                 else
-                switchCase++;
+                    switchCase++;
             }
             return invalidInputs;
         }
