@@ -4,11 +4,11 @@ using FC.CodeFlix.Catalog.UnitTests.Common;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Delete
 {
-    [CollectionDefinition(nameof(DeleteCategoryTestFixure))]
-    public class DeleteCategoryTestFixureCollection : ICollectionFixture<DeleteCategoryTestFixure>
+    [CollectionDefinition(nameof(DeleteCategoryTestFixture))]
+    public class DeleteCategoryTestFixureCollection : ICollectionFixture<DeleteCategoryTestFixture>
     {}
 
-    public class DeleteCategoryTestFixure : BaseFixture
+    public class DeleteCategoryTestFixture : BaseFixture
     {
         public Mock<ICategoryRepository> GetCategoryRepositoryMock() => new();
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();

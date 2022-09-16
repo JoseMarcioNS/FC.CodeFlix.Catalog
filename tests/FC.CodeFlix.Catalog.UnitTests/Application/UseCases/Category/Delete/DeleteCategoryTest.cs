@@ -2,12 +2,12 @@
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Delete
 {
-    [Collection(nameof(DeleteCategoryTestFixure))]
+    [Collection(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTest
     {
-        private readonly DeleteCategoryTestFixure _fixure;
+        private readonly DeleteCategoryTestFixture _fixure;
 
-        public DeleteCategoryTest(DeleteCategoryTestFixure fixure)
+        public DeleteCategoryTest(DeleteCategoryTestFixture fixure)
            => _fixure = fixure;
 
         [Fact(DisplayName = nameof(DeleteCategoryOk))]
