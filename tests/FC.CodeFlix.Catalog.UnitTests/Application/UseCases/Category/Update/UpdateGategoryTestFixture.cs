@@ -1,6 +1,5 @@
 ﻿using FC.CodeFlix.Catalog.Application.Interfaces;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
-using FC.CodeFlix.Catalog.Domain.Entity;
 using FC.CodeFlix.Catalog.Domain.Interfaces;
 using FC.CodeFlix.Catalog.UnitTests.Common;
 
