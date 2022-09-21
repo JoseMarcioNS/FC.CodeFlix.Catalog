@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.Domain", "src\FC.CodeFlix.Catalog.Domain\FC.CodeFlix.Catalog.Domain.csproj", "{68179155-2562-431B-BB96-0A846FC0B76C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.Application", "src\FC.CodeFlix.Catalog.Application\FC.CodeFlix.Catalog.Application.csproj", "{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.Application", "src\FC.CodeFlix.Catalog.Application\FC.CodeFlix.Catalog.Application.csproj", "{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.IntegrationTests", "tests\FC.CodeFlix.Catalog.IntegrationTests\FC.CodeFlix.Catalog.IntegrationTests.csproj", "{D433634F-E7CA-49F3-8DFC-125BEBC422CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.Infra.Data.EF", "src\FC.CodeFlix.Catalog.Infra.Data.EF\FC.CodeFlix.Catalog.Infra.Data.EF.csproj", "{472053A7-F787-4D63-89A7-7687252B341B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,14 @@ Global
 		{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D433634F-E7CA-49F3-8DFC-125BEBC422CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D433634F-E7CA-49F3-8DFC-125BEBC422CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D433634F-E7CA-49F3-8DFC-125BEBC422CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D433634F-E7CA-49F3-8DFC-125BEBC422CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{472053A7-F787-4D63-89A7-7687252B341B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{472053A7-F787-4D63-89A7-7687252B341B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{472053A7-F787-4D63-89A7-7687252B341B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{472053A7-F787-4D63-89A7-7687252B341B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +51,8 @@ Global
 		{70674E05-E145-46C5-8A62-50F9BB721544} = {00F80CD7-8CEC-411D-8D9F-9BA238BED901}
 		{68179155-2562-431B-BB96-0A846FC0B76C} = {46F31B3E-E8D3-4A2A-98F8-1A7AEEEF4328}
 		{7ACE77A2-A245-4C9C-8BA0-CC6B64EFD62B} = {46F31B3E-E8D3-4A2A-98F8-1A7AEEEF4328}
+		{D433634F-E7CA-49F3-8DFC-125BEBC422CF} = {00F80CD7-8CEC-411D-8D9F-9BA238BED901}
+		{472053A7-F787-4D63-89A7-7687252B341B} = {46F31B3E-E8D3-4A2A-98F8-1A7AEEEF4328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0488D242-6DF3-436B-9543-12296327C47F}
