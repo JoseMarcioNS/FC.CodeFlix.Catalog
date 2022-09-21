@@ -5,3 +5,4 @@ global using Microsoft.EntityFrameworkCore;
 global using FC.CodeFlix.Catalog.Domain.Entity;
 global using FC.CodeFlix.Catalog.Infra.Data.EF;
 global using Repository = FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
+global using UnitOfWorkInfra = FC.CodeFlix.Catalog.Infra.Data.EF;
