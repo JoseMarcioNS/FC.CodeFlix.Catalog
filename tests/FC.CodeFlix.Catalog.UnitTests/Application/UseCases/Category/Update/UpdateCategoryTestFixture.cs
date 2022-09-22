@@ -3,10 +3,10 @@ using FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Common;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
 {
-    [CollectionDefinition(nameof(UpdateGategoryTestFixture))]
-    public class UpdateCategoryColletionFixture : ICollectionFixture<UpdateGategoryTestFixture>
+    [CollectionDefinition(nameof(UpdateCategoryTestFixture))]
+    public class UpdateCategoryColletionFixture : ICollectionFixture<UpdateCategoryTestFixture>
     { }
-    public class UpdateGategoryTestFixture : CategoryBaseFixture
+    public class UpdateCategoryTestFixture : CategoryBaseFixture
     {
         public UpdateCategoryInput GetCategory(Guid? id = null)
             => new(

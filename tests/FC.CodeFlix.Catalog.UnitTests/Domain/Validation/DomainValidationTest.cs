@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using FC.CodeFlix.Catalog.Domain.Exeptions;
+using FC.CodeFlix.Catalog.Domain.Exceptions;
 using FC.CodeFlix.Catalog.Domain.Validation;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
@@ -17,7 +17,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
 
             Action action = () => DomainValidation.ShouldNotBeNull(value, fieldName);
 
-            action.Should().Throw<EntityValidationExption>()
+            action.Should().Throw<EntityValidationException>()
                 .WithMessage($"{fieldName} should not be null");
         }
         [Fact(DisplayName = nameof(WhenNotbeNullOk))]
@@ -42,7 +42,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
 
             Action action = () => DomainValidation.ShouldNotBeNullOrEmpty(value!, fieldName);
 
-            action.Should().Throw<EntityValidationExption>()
+            action.Should().Throw<EntityValidationException>()
                 .WithMessage($"{fieldName} should not be null or empty");
         }
         [Fact(DisplayName = nameof(WhenNotNetNullOrEmptyOk))]
@@ -66,7 +66,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
 
             Action action = () => DomainValidation.MinLenght(value, minLenght, fieldName);
 
-            action.Should().Throw<EntityValidationExption>()
+            action.Should().Throw<EntityValidationException>()
                 .WithMessage($"{fieldName} should not be less than {minLenght} characters long");
 
         }
@@ -117,7 +117,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
 
             Action action = () => DomainValidation.MaxLenght(value, maxLenght, fieldName);
 
-            action.Should().Throw<EntityValidationExption>()
+            action.Should().Throw<EntityValidationException>()
                 .WithMessage($"{fieldName} should not be greater than {maxLenght} characters long");
 
         }

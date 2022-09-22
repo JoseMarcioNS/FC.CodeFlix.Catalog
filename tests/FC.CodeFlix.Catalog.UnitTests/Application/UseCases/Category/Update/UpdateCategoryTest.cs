@@ -5,12 +5,12 @@ using Xunit;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
 {
-    [Collection(nameof(UpdateGategoryTestFixture))]
+    [Collection(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryTest
     {
-        private readonly UpdateGategoryTestFixture _fiture;
+        private readonly UpdateCategoryTestFixture _fiture;
 
-        public UpdateCategoryTest(UpdateGategoryTestFixture fiture)
+        public UpdateCategoryTest(UpdateCategoryTestFixture fiture)
          => _fiture = fiture;
 
         [Theory(DisplayName = nameof(UpdateCategoryOk))]

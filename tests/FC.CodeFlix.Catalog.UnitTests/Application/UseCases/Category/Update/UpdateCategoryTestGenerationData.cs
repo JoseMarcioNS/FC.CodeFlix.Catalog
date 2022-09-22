@@ -4,7 +4,7 @@
     {
         public static IEnumerable<object[]> GetCategoriesUpdate(int times)
         {
-            var fixture = new UpdateGategoryTestFixture();
+            var fixture = new UpdateCategoryTestFixture();
             var listCategories = new List<object[]>();
 
             for (int i = 0; i < times; i++)

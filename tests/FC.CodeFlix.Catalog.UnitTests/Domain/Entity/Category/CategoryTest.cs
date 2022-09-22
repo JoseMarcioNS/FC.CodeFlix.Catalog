@@ -1,4 +1,4 @@
-﻿using FC.CodeFlix.Catalog.Domain.Exeptions;
+﻿using FC.CodeFlix.Catalog.Domain.Exceptions;
 
 
 namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
@@ -61,7 +61,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
 
             Action action = () => new DomainEntity.Category(invalidName!, validCategory.Description);
 
-           action.Should().Throw<EntityValidationExption>().WithMessage("Name should not be null or empty");
+           action.Should().Throw<EntityValidationException>().WithMessage("Name should not be null or empty");
 
         }
         [Theory(DisplayName = nameof(InstantiateErrorwhenNameLessThan3Characters))]
@@ -73,7 +73,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => new DomainEntity.Category(invalidName, validCategory.Description);
 
             action.Should()
-           .Throw<EntityValidationExption>()
+           .Throw<EntityValidationException>()
            .WithMessage("Name should not be less than 3 characters long");
 
         }
@@ -91,7 +91,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => new DomainEntity.Category(invalidName, validCategory.Description);
 
             action.Should()
-                .Throw<EntityValidationExption>()
+                .Throw<EntityValidationException>()
                 .WithMessage("Name should not be greater than 255 characters long");
         }
 
@@ -103,7 +103,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => new DomainEntity.Category(validCategory.Name, null!);
 
             action.Should()
-                 .Throw<EntityValidationExption>()
+                 .Throw<EntityValidationException>()
                  .WithMessage("Description should not be null");
 
 
@@ -120,7 +120,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => new DomainEntity.Category(validCategory.Name, invalidDescription);
 
             action.Should()
-                  .Throw<EntityValidationExption>()
+                  .Throw<EntityValidationException>()
                   .WithMessage("Description should not be greater than 10000 characters long");
 
 
@@ -169,7 +169,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => category.Update(invalidName!);
 
             action.Should()
-                  .Throw<EntityValidationExption>()
+                  .Throw<EntityValidationException>()
                   .WithMessage("Name should not be null or empty");
         }
         [Theory(DisplayName = nameof(UpdateErrorwhenNameLessThan3Characters))]
@@ -181,7 +181,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => category.Update(invalidName);
 
             action.Should()
-                 .Throw<EntityValidationExption>()
+                 .Throw<EntityValidationException>()
                  .WithMessage("Name should not be less than 3 characters long");
 
         }
@@ -197,7 +197,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => category.Update(invalidName);
 
             action.Should()
-                  .Throw<EntityValidationExption>()
+                  .Throw<EntityValidationException>()
                   .WithMessage("Name should not be greater than 255 characters long");
         }
         [Fact(DisplayName = nameof(UpdateErrorWhenDescriptionIsGreaterThan10_000Characters))]
@@ -212,7 +212,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             Action action = () => category.Update("Category New Name", invalidDescription);
 
             action.Should()
-                  .Throw<EntityValidationExption>()
+                  .Throw<EntityValidationException>()
                   .WithMessage("Description should not be greater than 10000 characters long");
         }
         public static IEnumerable<Object[]> GetrwhenNameLessThan3Characters(int numberOfTests)

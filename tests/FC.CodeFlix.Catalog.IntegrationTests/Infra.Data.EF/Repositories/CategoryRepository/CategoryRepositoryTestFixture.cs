@@ -1,4 +1,5 @@
-﻿using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+﻿using FC.CodeFlix.Catalog.Domain.Entity;
+using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository
 {

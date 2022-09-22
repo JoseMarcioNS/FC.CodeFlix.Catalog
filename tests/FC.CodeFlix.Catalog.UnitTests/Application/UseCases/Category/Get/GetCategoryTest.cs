@@ -47,16 +47,16 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Get
             repositoryMock.Setup(x => x.Get(
                  It.IsAny<Guid>()
                 , It.IsAny<CancellationToken>()
-                )).ThrowsAsync(new NotFoundException($"Category '{id}' not found"));
+                )).ThrowsAsync(new NotFoundException($"Category '{id}' not found."));
 
             var input = new GetCategoryInput(id);
             var useCase = new GetCategory(repositoryMock.Object);
 
-            var tast = async () => await useCase.Handle(input, CancellationToken.None);
+            var task = async () => await useCase.Handle(input, CancellationToken.None);
 
-            await tast.Should()
+            await task.Should()
                       .ThrowAsync<NotFoundException>()
-                      .WithMessage($"Category '{id}' not found");
+                      .WithMessage($"Category '{id}' not found.");
 
             repositoryMock.Verify(c => c.Get(
                            It.IsAny<Guid>(),

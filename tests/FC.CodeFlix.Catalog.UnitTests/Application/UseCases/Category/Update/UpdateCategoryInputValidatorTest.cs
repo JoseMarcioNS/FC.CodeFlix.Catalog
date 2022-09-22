@@ -2,12 +2,12 @@
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
 {
-    [Collection(nameof(UpdateGategoryTestFixture))]
+    [Collection(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryInputValidatorTest
     {
-        private readonly UpdateGategoryTestFixture _fixture;
+        private readonly UpdateCategoryTestFixture _fixture;
 
-        public UpdateCategoryInputValidatorTest(UpdateGategoryTestFixture fixture)
+        public UpdateCategoryInputValidatorTest(UpdateCategoryTestFixture fixture)
        => _fixture = fixture;
 
         [Fact(DisplayName = nameof(ValidateOk))]

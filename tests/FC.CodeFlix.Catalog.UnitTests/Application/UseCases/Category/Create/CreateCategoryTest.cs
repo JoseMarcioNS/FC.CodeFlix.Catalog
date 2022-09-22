@@ -1,5 +1,5 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
-using FC.CodeFlix.Catalog.Domain.Exeptions;
+using FC.CodeFlix.Catalog.Domain.Exceptions;
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Create
 {
     [Collection(nameof(CreateCategoryTestFixture))]
@@ -47,7 +47,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Create
 
             Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
 
-            await task.Should().ThrowAsync<EntityValidationExption>().WithMessage(exeptionMessage);
+            await task.Should().ThrowAsync<EntityValidationException>().WithMessage(exeptionMessage);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Bogus;
+using FC.CodeFlix.Catalog.Domain.Entity;
+
 namespace FC.CodeFlix.Catalog.IntegrationTests.Common
 {
     public class BaseFixture
