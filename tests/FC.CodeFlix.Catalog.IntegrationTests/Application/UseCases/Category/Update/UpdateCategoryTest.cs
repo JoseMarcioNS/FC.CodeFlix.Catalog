@@ -1,5 +1,6 @@
 ﻿using FC.CodeFlix.Catalog.Application.Excepitons;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
+using FC.CodeFlix.Catalog.Domain.Exceptions;
 using FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Update
@@ -91,6 +92,28 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
             output.Name.Should().Be(input.Name);
             output.Description.Should().Be(category.Description);
             output.IsActive.Should().Be(category.IsActive);
+        }
+        [Theory(DisplayName = nameof(ThrowExcepitonWhenInvalidInputs))]
+        [Trait("Integration/Application", "UpdateCategoryTest - UseCaes")]
+        [MemberData(nameof(UpdateCategoryTestGenerationData.GetInvalidInputs),
+           parameters: 10,
+           MemberType = typeof(UpdateCategoryTestGenerationData))
+       ]
+        public async void ThrowExcepitonWhenInvalidInputs(
+           DomainEntity.Category category,
+           UpdateCategoryInput input, string ErrorMessage)
+        {
+            var context = _fixture.CreateDbContext();
+            var repository = new CategoryRepository(context);
+            var unitOfWork = new UnitOfWork(context);
+            await context.Categories.AddAsync(category);
+            await context.SaveChangesAsync();
+            var useCase = new UpdateCategory(repository, unitOfWork);
+
+            Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
+
+            await task.Should().ThrowAsync<EntityValidationException>().WithMessage(ErrorMessage);
+
         }
         [Fact(DisplayName = nameof(ThrowExceptioWhenNotFoundCategory))]
         [Trait("Integration/Application", "UpdateCategoryTest - UseCaes")]
