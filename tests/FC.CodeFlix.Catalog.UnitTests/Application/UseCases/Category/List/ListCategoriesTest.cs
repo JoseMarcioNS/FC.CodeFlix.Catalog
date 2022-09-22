@@ -67,7 +67,6 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
         public async Task ListCategoriesOkWhenEmpty()
         {
             var repositoryMock = _fixture.GetCategoryRepositoryMock();
-
             var input = _fixture.GetListCategoriesInput();
             var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
                  currentPage: input.Page,
@@ -87,6 +86,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
             var useCase = new ListCategories(repositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
+
             output.Should().NotBeNull();
             output.CurrentPage.Should().Be(outputRepositorySearch.CurrentPage);
             output.PerPage.Should().Be(outputRepositorySearch.PerPage);
@@ -132,6 +132,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
             var useCase = new ListCategories(repositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
+
             output.Should().NotBeNull();
             output.CurrentPage.Should().Be(outputRepositorySearch.CurrentPage);
             output.PerPage.Should().Be(outputRepositorySearch.PerPage);
