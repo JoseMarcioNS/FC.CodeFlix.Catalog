@@ -1,5 +1,9 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
 {
@@ -13,18 +17,18 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
             _fixture = fixture;
         }
 
-        [Fact(DisplayName =(nameof(CreateCategory)))]
-        [Trait("End2End/Api","Category - Endpoints")]
+        [Fact(DisplayName = (nameof(CreateCategory)))]
+        [Trait("End2End/Api", "Category - Endpoints")]
         public async Task CreateCategory()
         {
-            var input = _fixture.GetCategory();
+            var input = _fixture.CreateCategoryInput();
 
-           var (response,ouput) = await _fixture.ApiClient.Post<CategoryModelOuput>(
-                "/categories",
-                input
-                );
+            var (response, ouput) = await _fixture.ApiClient.Post<CategoryModelOuput>(
+                 "/categories",
+                 input
+                 );
             response.Should().NotBeNull();
-            response!.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+            response!.StatusCode.Should().Be(HttpStatusCode.Created);
             ouput.Should().NotBeNull();
             ouput!.Id.Should().NotBeEmpty();
             ouput.Name.Should().Be(input.Name);
@@ -39,7 +43,25 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
             dbCategory.IsActive.Should().Be(input.IsActive);
             dbCategory.CreatedAt.Should().NotBeSameDateAs(default);
 
-           
+
+        }
+        [Theory(DisplayName = (nameof(ThrowWhenCannotCreateCategory)))]
+        [Trait("End2End/Api", "Category - Endpoints")]
+        [MemberData(nameof(CreateCategoryTestGeneretorData.GetInvalidInputs),
+            MemberType = typeof(CreateCategoryTestGeneretorData))]
+        public async Task ThrowWhenCannotCreateCategory(CreateCategoryInput input, string messageError)
+        {
+            var (response, ouput) = await _fixture.ApiClient.Post<ProblemDetails>(
+                "/categories",
+                input
+                );
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+            ouput.Should().NotBeNull();
+            ouput!.Title.Should().Be("One or more validation errors ocurred");
+            ouput.Type.Should().Be("UnprocessableEntity");
+            ouput.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
+            ouput.Detail.Should().Be(messageError);
         }
     }
 }

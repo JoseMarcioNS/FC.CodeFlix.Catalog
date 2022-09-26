@@ -10,5 +10,6 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Common
         {
             Persistence = new CategoryPersistence(CreateDbContext());
         }
+
     }
 }

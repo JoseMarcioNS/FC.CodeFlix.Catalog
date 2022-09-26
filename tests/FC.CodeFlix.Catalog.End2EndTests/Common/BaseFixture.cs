@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Domain.Entity;
 using FC.CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,27 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
         public List<Category> GetListCategories(int length = 10)
           => Enumerable.Range(1, length)
                 .Select(_ => GetCategory()).ToList();
+        public string GetInvalidNameMinLenght()
+        => Faker.Commerce.ProductName()[..2];
+
+
+        public string GetInvalidNameMaxLeght()
+        {
+            var input = Faker.Commerce.ProductName();
+            while (input.Length <= 255)
+                input += Faker.Commerce.ProductName();
+            return input;
+        }
+       
+        public string GetInvalidDescriptionMaxLeght()
+        {
+            var description = Faker.Commerce.ProductDescription();
+
+            while (description.Length <= 10_000)
+                description += Faker.Commerce.ProductDescription();
+            return description;
+        }
+
         public void CleanInMemoryDatabase()
            => CreateDbContext().Database.EnsureDeleted();
     }
