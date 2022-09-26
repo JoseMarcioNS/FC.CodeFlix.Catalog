@@ -16,7 +16,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         public async Task Insert()
         {
             var codeFlixCatalogDbContext = _fixture.CreateDbContext();
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await categoryRepository.Insert(category, CancellationToken.None);
             await codeFlixCatalogDbContext.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         {
             var codeFlixCatalogDbContext = _fixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await codeFlixCatalogDbContext.AddRangeAsync(categories);
             await codeFlixCatalogDbContext.SaveChangesAsync();
@@ -105,7 +105,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         public async Task Delete()
         {
             var codeFlixCatalogDbContext = _fixture.CreateDbContext();
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await categoryRepository.Insert(category, CancellationToken.None);
             await codeFlixCatalogDbContext.SaveChangesAsync();

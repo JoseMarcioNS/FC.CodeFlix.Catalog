@@ -9,7 +9,7 @@
 
             for (int i = 0; i < times; i++)
             {
-                var category = fixture.GetCategory();
+                var category = fixture.GetValidCategory();
                 var categoryUpdated = fixture.GetUpdateCategoryInput(category.Id);
                 listCategories.Add(new object[] { category, categoryUpdated });
             }
@@ -27,23 +27,23 @@
                 switch (switchCase)
                 {
                     case 1:
-                        category = fixture.GetCategory();
+                        category = fixture.GetValidCategory();
                         var inputNameNull = fixture.GetInputInvalidNameNull(category);
                         invalidInputs.Add(new object[] { category, inputNameNull, "Name should not be null or empty" });
                         break;
                     case 2:
-                        category = fixture.GetCategory();
+                        category = fixture.GetValidCategory();
                         var inputNameMinLeght = fixture.GetInputInvalidNameMinLenght(category);
                         invalidInputs.Add(new object[]{category,inputNameMinLeght,"Name should not be less than 3 characters long"
                         });
                         break;
                     case 3:
-                        category = fixture.GetCategory();
+                        category = fixture.GetValidCategory();
                         var inputNameMaxLeght = fixture.GetInputInvalidNameMaxLeght(category);
                         invalidInputs.Add(new object[] { category, inputNameMaxLeght, "Name should not be greater than 255 characters long" });
                         break;
                     case 4:
-                        category = fixture.GetCategory();
+                        category = fixture.GetValidCategory();
                         var inputDEscriptionMaxLeght = fixture.GetInputInvalidDescriptionMaxLeght(category);
                         invalidInputs.Add(new object[] { category, inputDEscriptionMaxLeght, "Description should not be greater than 10000 characters long" });
                         break;

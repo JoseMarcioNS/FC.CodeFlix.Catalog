@@ -6,16 +6,16 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
     [Collection(nameof(CategoryTestFixture))]
     public class CategoryTest
     {
-        private readonly CategoryTestFixture _categoryTestFixture;
-        public CategoryTest(CategoryTestFixture categoryTestFixture) =>
-                   _categoryTestFixture = categoryTestFixture;
+        private readonly CategoryTestFixture _fixture;
+        public CategoryTest(CategoryTestFixture fixture) =>
+                   _fixture = fixture;
 
 
         [Fact(DisplayName = nameof(Instantiate))]
         [Trait("Domain", "Category - Aggregates")]
         public void Instantiate()
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
             var dateTimeBefore = DateTime.Now;
             var category = new DomainEntity.Category(validCategory.Name, validCategory.Description);
             var dateTimeAfter = DateTime.Now.AddSeconds(1);
@@ -35,7 +35,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [InlineData(false)]
         public void InstantiateWithActive(bool isActive)
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
             var dateTimeBefore = DateTime.Now;
             var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, isActive);
             var dateTimeAfter = DateTime.Now.AddSeconds(1);
@@ -57,7 +57,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [InlineData("   ")]
         public void InstantiateNameIsEmptyOrNull(string? invalidName)
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
 
             Action action = () => new DomainEntity.Category(invalidName!, validCategory.Description);
 
@@ -69,7 +69,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [MemberData(nameof(GetrwhenNameLessThan3Characters), parameters: 10)]
         public void InstantiateErrorwhenNameLessThan3Characters(string invalidName)
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
             Action action = () => new DomainEntity.Category(invalidName, validCategory.Description);
 
             action.Should()
@@ -82,11 +82,11 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void InstantiateErrorWhenNameIsGreaterThan255Characters()
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
 
-            var invalidName = _categoryTestFixture.Faker.Commerce.Categories(1)[0];
+            var invalidName = _fixture.Faker.Commerce.Categories(1)[0];
             while (invalidName.Length <= 255)
-                invalidName += _categoryTestFixture.Faker.Commerce.Categories(1)[0];
+                invalidName += _fixture.Faker.Commerce.Categories(1)[0];
 
             Action action = () => new DomainEntity.Category(invalidName, validCategory.Description);
 
@@ -99,7 +99,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void InstantiateErrorWhenDescriptionIsNull()
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
             Action action = () => new DomainEntity.Category(validCategory.Name, null!);
 
             action.Should()
@@ -112,10 +112,10 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void InstantiateErrorWhenDescriptionIsGreaterThan10_000Characters()
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
-            var invalidDescription = _categoryTestFixture.Faker.Commerce.ProductDescription();
+            var validCategory = _fixture.GetValidCategory();
+            var invalidDescription = _fixture.Faker.Commerce.ProductDescription();
             while (invalidDescription.Length <= 10_000)
-                invalidDescription += _categoryTestFixture.Faker.Commerce.ProductDescription();
+                invalidDescription += _fixture.Faker.Commerce.ProductDescription();
 
             Action action = () => new DomainEntity.Category(validCategory.Name, invalidDescription);
 
@@ -129,7 +129,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void InstantiateIsActive()
         {
-            var validCategory = _categoryTestFixture.GetValidCategory();
+            var validCategory = _fixture.GetValidCategory();
             var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, false);
 
             category.Active();
@@ -140,7 +140,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void InstantiateIsDeactive()
         {
-            var category = _categoryTestFixture.GetValidCategory();
+            var category = _fixture.GetValidCategory();
 
             category.Deactive();
 
@@ -150,8 +150,8 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void Update()
         {
-            var category = _categoryTestFixture.GetValidCategory();
-            var updateCategory = _categoryTestFixture.GetValidCategory();
+            var category = _fixture.GetValidCategory();
+            var updateCategory = _fixture.GetValidCategory();
 
             category.Update(updateCategory.Name, updateCategory.Description);
 
@@ -165,7 +165,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [InlineData("   ")]
         public void UpdateNameIsEmptyOrNull(string? invalidName)
         {
-            var category = _categoryTestFixture.GetValidCategory();
+            var category = _fixture.GetValidCategory();
             Action action = () => category.Update(invalidName!);
 
             action.Should()
@@ -177,7 +177,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [MemberData(nameof(GetrwhenNameLessThan3Characters), parameters: 10)]
         public void UpdateErrorwhenNameLessThan3Characters(string invalidName)
         {
-            var category = _categoryTestFixture.GetValidCategory();
+            var category = _fixture.GetValidCategory();
             Action action = () => category.Update(invalidName);
 
             action.Should()
@@ -189,10 +189,10 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void UpdateErrorWhenNameIsGreaterThan255Characters()
         {
-            var category = _categoryTestFixture.GetValidCategory();
-            var invalidName = _categoryTestFixture.Faker.Commerce.Categories(1)[0];
+            var category = _fixture.GetValidCategory();
+            var invalidName = _fixture.Faker.Commerce.Categories(1)[0];
             while (invalidName.Length <= 255)
-                invalidName += _categoryTestFixture.Faker.Commerce.Categories(1)[0];
+                invalidName += _fixture.Faker.Commerce.Categories(1)[0];
 
             Action action = () => category.Update(invalidName);
 
@@ -204,10 +204,10 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void UpdateErrorWhenDescriptionIsGreaterThan10_000Characters()
         {
-            var category = _categoryTestFixture.GetValidCategory();
-            var invalidDescription = _categoryTestFixture.Faker.Commerce.ProductDescription();
+            var category = _fixture.GetValidCategory();
+            var invalidDescription = _fixture.Faker.Commerce.ProductDescription();
             while (invalidDescription.Length <= 10_000)
-                invalidDescription += _categoryTestFixture.Faker.Commerce.ProductDescription();
+                invalidDescription += _fixture.Faker.Commerce.ProductDescription();
 
             Action action = () => category.Update("Category New Name", invalidDescription);
 

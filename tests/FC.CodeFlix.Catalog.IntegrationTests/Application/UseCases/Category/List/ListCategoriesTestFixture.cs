@@ -13,7 +13,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         public List<DomainEntity.Category> CreateCategoriesWithNames(string[] names)
           => names.Select(n =>
           {
-              var category = GetCategory();
+              var category = GetValidCategory();
               category.Update(n);
               return category;
           }).ToList();

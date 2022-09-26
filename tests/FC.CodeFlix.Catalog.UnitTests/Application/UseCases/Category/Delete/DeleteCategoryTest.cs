@@ -1,6 +1,6 @@
 ﻿using FC.CodeFlix.Catalog.Application.Excepitons;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
-using FluentAssertions;
+
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Delete
 {

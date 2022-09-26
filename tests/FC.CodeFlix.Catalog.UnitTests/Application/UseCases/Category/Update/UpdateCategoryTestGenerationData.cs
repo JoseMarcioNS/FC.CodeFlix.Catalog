@@ -1,6 +1,4 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
-
-namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
+﻿namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
 {
     public class UpdateCategoryTestGenerationData
     {
@@ -44,7 +42,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.Update
                         var inputNameMaxLeght = fixture.GetInputInvalidNameMaxLeght(category);
                         invalidInputs.Add(new object[] { category, inputNameMaxLeght, "Name should not be greater than 255 characters long" });
                         break;
-                     case 4:
+                    case 4:
                         category = fixture.GetValidCategory();
                         var inputDEscriptionMaxLeght = fixture.GetInputInvalidDescriptionMaxLeght(category);
                         invalidInputs.Add(new object[] { category, inputDEscriptionMaxLeght, "Description should not be greater than 10000 characters long" });

@@ -2,11 +2,11 @@
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Common
 {
-    public class CategoryBaseFixture : BaseFixture
+    public class CategoryCommonFixture : BaseFixture
     {
         public CategoryPersistence Persistence;
 
-        public CategoryBaseFixture() : base()
+        public CategoryCommonFixture() : base()
         {
             Persistence = new CategoryPersistence(CreateDbContext());
         }

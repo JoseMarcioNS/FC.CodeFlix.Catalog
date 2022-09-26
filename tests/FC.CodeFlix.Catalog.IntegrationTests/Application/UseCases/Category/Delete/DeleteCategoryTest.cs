@@ -20,7 +20,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
             var context = _fixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             await repository.Insert(category, CancellationToken.None);
             await context.SaveChangesAsync();
             var input = new DeleteCategoryInput(category.Id);
@@ -38,7 +38,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
             var context = _fixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             var input = new DeleteCategoryInput(category.Id);
             var useCase = new DeleteCategory(repository, unitOfWork);
 

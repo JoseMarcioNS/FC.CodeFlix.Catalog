@@ -1,8 +1,5 @@
-﻿
-
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Xml;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Common
 {

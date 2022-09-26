@@ -21,14 +21,13 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
         public CreateCategoryInput GetInputInvalidNameMinLenght()
         {
             var input = GetCreateCategoryInput();
-            input.Name = input.Name[..2];
+            input.Name = GetInvalidNameMinLenght();
             return input;
         }
         public CreateCategoryInput GetInputInvalidNameMaxLeght()
         {
             var input = GetCreateCategoryInput();
-            while (input.Name.Length <= 255)
-                input.Name += Faker.Commerce.ProductName();
+            input.Name = GetInvalidNameMaxLeght();
             return input;
         }
         public CreateCategoryInput GetInputInvalidDescriptionNull()
@@ -40,10 +39,9 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
         public CreateCategoryInput GetInputInvalidDescriptionMaxLeght()
         {
             var input = GetCreateCategoryInput();
+           input.Description = GetInvalidDescriptionMaxLeght();
+           return input;
 
-            while (input.Description.Length <= 10_000)
-                input.Description += Faker.Commerce.ProductDescription();
-            return input;
         }
     }
 }

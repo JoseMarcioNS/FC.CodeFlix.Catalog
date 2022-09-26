@@ -6,7 +6,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
 {
     [CollectionDefinition(nameof(ListCategoriesTestFixture))]
     public class ListCategoriesTestFixtureCollection : ICollectionFixture<ListCategoriesTestFixture> { }
-    public class ListCategoriesTestFixture : CategoryBaseFixture
+    public class ListCategoriesTestFixture : CategoryCommonFixture
     {
         public List<DomainEntity.Category> ListCategories(int length = 10)
         {

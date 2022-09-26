@@ -5,12 +5,12 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
 {
     [CollectionDefinition(nameof(CategoryRepositoryTestFixture))]
     public class CategoryRepositoryTestFixtureCollection : ICollectionFixture<CategoryRepositoryTestFixture> { }
-    public class CategoryRepositoryTestFixture : BaseFixture
+    public class CategoryRepositoryTestFixture : CommonFixture
     {
         public List<Category> CreateCategoriesWithNames(string[] names)
           => names.Select(n =>
           {
-              var category = GetCategory();
+              var category = GetValidCategory();
               category.Update(n);
               return category;
           }).ToList();

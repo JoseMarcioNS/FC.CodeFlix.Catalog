@@ -4,7 +4,7 @@
     public class UnitOfWorkTestFixtureCollection : ICollectionFixture<UnitOfWorkTestFixture>
     {
     }
-    public class UnitOfWorkTestFixture : BaseFixture
+    public class UnitOfWorkTestFixture : CommonFixture
     {
     }
 }

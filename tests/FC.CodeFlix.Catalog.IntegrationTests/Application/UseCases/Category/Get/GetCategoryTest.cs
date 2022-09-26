@@ -18,7 +18,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
         {
             var context = _fixture.CreateDbContext();
             var repository = new CategoryRepository(context);
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             await repository.Insert(category, CancellationToken.None);
             await context.SaveChangesAsync();
             var getCategoryInput = new GetCategoryInput(category.Id);
@@ -39,7 +39,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
         {
             var context = _fixture.CreateDbContext();
             var repository = new CategoryRepository(context);
-            var category = _fixture.GetCategory();
+            var category = _fixture.GetValidCategory();
             await repository.Insert(category, CancellationToken.None);
             await context.SaveChangesAsync();
             var input = new GetCategoryInput(Guid.NewGuid());

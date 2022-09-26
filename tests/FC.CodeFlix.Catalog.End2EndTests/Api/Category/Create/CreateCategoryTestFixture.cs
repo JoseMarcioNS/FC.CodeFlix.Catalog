@@ -9,7 +9,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
         : ICollectionFixture<CreateCategoryTestFixture>
     {
     }
-    public class CreateCategoryTestFixture : CategoryBaseFixture
+    public class CreateCategoryTestFixture : CategoryCommonFixture
     {
         public CreateCategoryInput CreateCategoryInput()
         => new(GetValidName()
