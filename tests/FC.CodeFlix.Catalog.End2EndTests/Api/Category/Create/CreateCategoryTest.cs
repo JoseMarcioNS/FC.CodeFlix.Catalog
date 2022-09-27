@@ -18,7 +18,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
         }
 
         [Fact(DisplayName = (nameof(CreateCategory)))]
-        [Trait("End2End/Api", "Category - Endpoints")]
+        [Trait("End2End/Api", "Category/Create - Endpoints")]
         public async Task CreateCategory()
         {
             var input = _fixture.CreateCategoryInput();
@@ -46,7 +46,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
 
         }
         [Theory(DisplayName = (nameof(ThrowWhenCannotCreateCategory)))]
-        [Trait("End2End/Api", "Category - Endpoints")]
+        [Trait("End2End/Api", "Category/Create - Endpoints")]
         [MemberData(nameof(CreateCategoryTestGeneretorData.GetInvalidInputs),
             MemberType = typeof(CreateCategoryTestGeneretorData))]
         public async Task ThrowWhenCannotCreateCategory(CreateCategoryInput input, string messageError)

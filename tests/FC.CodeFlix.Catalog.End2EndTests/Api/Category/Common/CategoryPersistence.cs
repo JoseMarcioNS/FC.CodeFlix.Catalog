@@ -13,7 +13,12 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Common
 
         public async Task<Domainentity.Category?> GetById(Guid id)
          =>await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-        
+
+        internal async Task InsertCategories(List<Domainentity.Category> categories)
+        {
+            await _context.Categories.AddRangeAsync(categories);
+            await _context.SaveChangesAsync();
+        }
     }
 }
 

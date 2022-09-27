@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+using System.Text;
 using System.Text.Json;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Common
@@ -31,7 +33,27 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
                     outputString,
                     new JsonSerializerOptions
                     {
-                       PropertyNameCaseInsensitive = true
+                        PropertyNameCaseInsensitive = true
+                    }
+                );
+            }
+
+            return (response, output);
+        }
+        public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(
+           string route
+            ) where TOutput : class
+        {
+            var response = await _httpClient.GetAsync(route);
+            var outputString = await response.Content.ReadAsStringAsync();
+            TOutput? output = null;
+            if (!string.IsNullOrWhiteSpace(outputString))
+            {
+                output = JsonSerializer.Deserialize<TOutput>(
+                    outputString,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
                     }
                 );
             }
