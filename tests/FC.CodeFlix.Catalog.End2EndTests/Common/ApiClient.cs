@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System.Text;
 using System.Text.Json;
@@ -65,6 +66,34 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
             where TOutput : class
         {
             var response = await _httpClient.DeleteAsync(route);
+            var outputString = await response.Content.ReadAsStringAsync();
+            TOutput? output = null;
+            if (!string.IsNullOrWhiteSpace(outputString))
+            {
+                output = JsonSerializer.Deserialize<TOutput>(
+                    outputString,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }
+                );
+            }
+
+            return (response, output);
+        }
+        public async Task<(HttpResponseMessage?, TOutput?)> Put<TOutput>(
+            string route,
+            object payload
+            ) where TOutput : class
+        {
+            var response = await _httpClient.PutAsync(
+                route,
+                new StringContent(
+                     JsonSerializer.Serialize(payload),
+                     Encoding.UTF8,
+                     "application/json"
+                    )
+                );
             var outputString = await response.Content.ReadAsStringAsync();
             TOutput? output = null;
             if (!string.IsNullOrWhiteSpace(outputString))

@@ -2,6 +2,7 @@ using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Get;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,16 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         {
             await _mediator.Send(new DeleteCategoryInput(id),cancellationToken);
             return NoContent();
-        } 
+        }
+        [HttpPut]
+        [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input,
+            CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return Ok(output);
+        }
     }
 }

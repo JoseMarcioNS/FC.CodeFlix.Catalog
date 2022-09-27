@@ -18,26 +18,15 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
                );
 
         public UpdateCategoryInput GetInputInvalidNameNull(DomainEntity.Category input)
-      => new(input.Id, null!, input.Description, input.IsActive);
+          => new(input.Id, null!, input.Description, input.IsActive);
 
         public UpdateCategoryInput GetInputInvalidNameMinLenght(DomainEntity.Category input)
-         => new(input.Id, input.Name[..2], input.Description, input.IsActive);
+         => new(input.Id, GetInvalidNameMinLenght(), input.Description, input.IsActive);
 
         public UpdateCategoryInput GetInputInvalidNameMaxLeght(DomainEntity.Category input)
-        {
-            var name = Faker.Commerce.ProductName();
-            while (name.Length <= 255)
-                name += Faker.Commerce.ProductName();
-
-            return new(input.Id, name, input.Description, input.IsActive);
-        }
+         => new(input.Id, GetInvalidNameMaxLeght(), input.Description, input.IsActive);
+    
         public UpdateCategoryInput GetInputInvalidDescriptionMaxLeght(DomainEntity.Category input)
-        {
-            var description = Faker.Commerce.ProductDescription();
-            while (description.Length <= 10_000)
-                description += Faker.Commerce.ProductDescription();
-
-            return new(input.Id, input.Name, description, input.IsActive);
-        }
+         => new (input.Id, input.Name, GetInvalidDescriptionMaxLeght(), input.IsActive);
     }
 }

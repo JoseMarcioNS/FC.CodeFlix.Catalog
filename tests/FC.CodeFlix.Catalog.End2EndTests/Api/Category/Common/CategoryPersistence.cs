@@ -11,14 +11,15 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Common
         public CategoryPersistence(CodeFlixCatalogDbContext context)
         => _context = context;
 
-        public async Task<Domainentity.Category?> GetById(Guid id)
+        public async Task<DomainEntity.Category?> GetById(Guid id)
          =>await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
-        internal async Task InsertCategories(List<Domainentity.Category> categories)
+        public async Task InsertCategories(List<DomainEntity.Category> categories)
         {
             await _context.Categories.AddRangeAsync(categories);
             await _context.SaveChangesAsync();
         }
+
     }
 }
 
