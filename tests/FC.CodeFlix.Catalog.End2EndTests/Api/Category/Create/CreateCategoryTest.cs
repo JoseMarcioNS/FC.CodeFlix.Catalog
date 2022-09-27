@@ -8,13 +8,14 @@ using System.Net;
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
 {
     [Collection(nameof(CreateCategoryTestFixture))]
-    public class CreateCategoryTest
+    public class CreateCategoryTest : IDisposable
     {
         private readonly CreateCategoryTestFixture _fixture;
 
         public CreateCategoryTest(CreateCategoryTestFixture fixture)
         {
             _fixture = fixture;
+            
         }
 
         [Fact(DisplayName = (nameof(CreateCategory)))]
@@ -45,6 +46,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
 
 
         }
+
         [Theory(DisplayName = (nameof(ThrowWhenCannotCreateCategory)))]
         [Trait("End2End/Api", "Category/Create - Endpoints")]
         [MemberData(nameof(CreateCategoryTestGeneretorData.GetInvalidInputs),
@@ -63,5 +65,8 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
             ouput.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
             ouput.Detail.Should().Be(messageError);
         }
+        public void Dispose()
+        =>  _fixture.CleanInMemoryDatabase();
+        
     }
 }

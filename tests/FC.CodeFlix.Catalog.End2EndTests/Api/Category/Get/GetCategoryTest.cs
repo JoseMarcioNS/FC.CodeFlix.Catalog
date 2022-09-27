@@ -1,17 +1,12 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Get
 {
     [Collection(nameof(GetCategoryTestFixture))]
-    public class GetCategoryTest
+    public class GetCategoryTest : IDisposable
     {
         private readonly GetCategoryTestFixture _fixture;
 
@@ -39,9 +34,9 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Get
             output.IsActive.Should().Be(category.IsActive);
             output.CreatedAt.Should().Be(category.CreatedAt);
         }
-        [Fact(DisplayName = nameof(ThrowWhenNotFoundCategory))]
+        [Fact(DisplayName = nameof(ErrorWhenNotFoundCategory))]
         [Trait("End2End/Api", "Category/Get - Endpoints")]
-        public async Task ThrowWhenNotFoundCategory()
+        public async Task ErrorWhenNotFoundCategory()
         {
             var categories = _fixture.GetListCategories();
             var id = Guid.NewGuid();
@@ -58,7 +53,9 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Get
             output.Type.Should().Be("NotFound");
             output.Status.Should().Be(StatusCodes.Status404NotFound);
             output.Detail.Should().Be($"Category '{id}' not found.");
-           
+
         }
+        public void Dispose()
+        => _fixture.CleanInMemoryDatabase();
     }
 }
