@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.End2End
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.Api", "src\FC.CodeFlix.Catalog.Api\FC.CodeFlix.Catalog.Api.csproj", "{220DE9CA-66E0-44F8-B490-84C813C23291}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.SharedTests", "tests\FC.CodeFlix.Catalog.SharedTests\FC.CodeFlix.Catalog.SharedTests.csproj", "{2E2E7385-A0AB-4CC4-BDC5-9F4FE12791F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.CodeFlix.Catalog.SharedTests", "tests\FC.CodeFlix.Catalog.SharedTests\FC.CodeFlix.Catalog.SharedTests.csproj", "{2E2E7385-A0AB-4CC4-BDC5-9F4FE12791F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

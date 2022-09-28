@@ -56,7 +56,7 @@ namespace FC.CodeFlix.Catalog.Infra.Data.EF.Repositories
                 ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
                 _ => query.OrderBy(x => x.Name)
             };
-            return queryOrdered;
+            return queryOrdered.ThenBy(x=> x.CreatedAt);
         }
     }
 }

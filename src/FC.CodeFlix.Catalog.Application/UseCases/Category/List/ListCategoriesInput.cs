@@ -16,5 +16,9 @@ namespace FC.CodeFlix.Catalog.Application.UseCases.Category.List
             : base(page, perPage, search, sort, dir)
         {
         }
+        public ListCategoriesInput() 
+            : base(1, 15, "", "", SearchOrder.Asc)
+        {
+        }
     }
 }

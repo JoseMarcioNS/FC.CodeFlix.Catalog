@@ -2,7 +2,9 @@ using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Get;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.List;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
+using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,10 +41,10 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete([FromRoute] Guid id, 
+        public async Task<IActionResult> Delete([FromRoute] Guid id,
             CancellationToken cancellationToken)
         {
-            await _mediator.Send(new DeleteCategoryInput(id),cancellationToken);
+            await _mediator.Send(new DeleteCategoryInput(id), cancellationToken);
             return NoContent();
         }
         [HttpPut]
@@ -52,6 +54,28 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input,
             CancellationToken cancellationToken)
         {
+            var output = await _mediator.Send(input, cancellationToken);
+            return Ok(output);
+        }
+        [HttpGet]
+        [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
+        public async Task<IActionResult> List(
+            CancellationToken cancellationToken,
+           [FromQuery] int? page,
+           [FromQuery] int? perPage,
+           [FromQuery] string? search,
+           [FromQuery] string? sort,
+           [FromQuery] SearchOrder? dir
+
+            )
+        {
+            var input = new ListCategoriesInput();
+            if (page is not null) input.Page = page.Value;
+            if (perPage is not null) input.PerPage = perPage.Value;
+            if (!string.IsNullOrWhiteSpace(search)) input.Search = search;
+            if (!string.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+            if (dir is not null) input.Dir = dir.Value;
+
             var output = await _mediator.Send(input, cancellationToken);
             return Ok(output);
         }

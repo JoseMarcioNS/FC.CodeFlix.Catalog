@@ -1,6 +1,4 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
+﻿using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Json;
 
@@ -26,58 +24,26 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
                      "application/json"
                     )
                 );
-            var outputString = await response.Content.ReadAsStringAsync();
-            TOutput? output = null;
-            if (!string.IsNullOrWhiteSpace(outputString))
-            {
-                output = JsonSerializer.Deserialize<TOutput>(
-                    outputString,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
-            }
+            TOutput? output = await GetOutpu<TOutput>(response);
 
             return (response, output);
         }
         public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(
-           string route
+           string route,
+           object? queryStringParametersObject = null
             ) where TOutput : class
         {
-            var response = await _httpClient.GetAsync(route);
-            var outputString = await response.Content.ReadAsStringAsync();
-            TOutput? output = null;
-            if (!string.IsNullOrWhiteSpace(outputString))
-            {
-                output = JsonSerializer.Deserialize<TOutput>(
-                    outputString,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
-            }
-
+            var url = PrepareRoute(route, queryStringParametersObject);
+            var response = await _httpClient.GetAsync(url);
+            TOutput? output = await GetOutpu<TOutput>(response);
             return (response, output);
         }
 
-        public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(string route) 
+        public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(string route)
             where TOutput : class
         {
             var response = await _httpClient.DeleteAsync(route);
-            var outputString = await response.Content.ReadAsStringAsync();
-            TOutput? output = null;
-            if (!string.IsNullOrWhiteSpace(outputString))
-            {
-                output = JsonSerializer.Deserialize<TOutput>(
-                    outputString,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
-            }
+            TOutput? output = await GetOutpu<TOutput>(response);
 
             return (response, output);
         }
@@ -94,6 +60,13 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
                      "application/json"
                     )
                 );
+
+            TOutput? output = await GetOutpu<TOutput>(response);
+
+            return (response, output);
+        }
+        private static async Task<TOutput?> GetOutpu<TOutput>(HttpResponseMessage response) where TOutput : class
+        {
             var outputString = await response.Content.ReadAsStringAsync();
             TOutput? output = null;
             if (!string.IsNullOrWhiteSpace(outputString))
@@ -107,7 +80,19 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
                 );
             }
 
-            return (response, output);
+            return output;
+        }
+        private string PrepareRoute(string route, object? queryStringParametersObject)
+        {
+            if (queryStringParametersObject is null)
+                return route;
+
+            var parameters = JsonSerializer.Serialize(queryStringParametersObject);
+            var parametersDictionary = Newtonsoft.Json.JsonConvert
+                .DeserializeObject<Dictionary<string, string>>(parameters);
+
+            return QueryHelpers.AddQueryString(route, parametersDictionary!);
+
         }
     }
 }
