@@ -155,8 +155,6 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         [InlineData("name", "desc")]
         [InlineData("id", "asc")]
         [InlineData("id", "desc")]
-        [InlineData("createdAt", "asc")]
-        [InlineData("createdAt", "desc")]
         [InlineData("", "asc")]
         public async Task SearchResultsOrdered(string orderBy, string order)
         {
@@ -187,6 +185,49 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
                 categoryReturned.Description.Should().Be(categoryOdered.Description);
                 categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
                 categoryReturned.CreatedAt.Should().Be(categoryOdered.CreatedAt);
+            }
+        }
+        [Theory(DisplayName = nameof(SearchResultsOrderedByDate))]
+        [Trait("Integration/Application", "CategoryRepository - UseCases")]
+        [InlineData("createdAt", "asc")]
+        [InlineData("createdAt", "desc")]
+        
+        public async Task SearchResultsOrderedByDate(string orderBy, string order)
+        {
+            var context = _fixture.CreateDbContext();
+            var categories = _fixture.GetListCategories();
+            var repository = new CategoryRepository(context);
+            await context.AddRangeAsync(categories);
+            await context.SaveChangesAsync();
+            var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+            var input = new ListCategoriesInput(1, categories.Count, "", orderBy, searchOrder);
+            var useCase = new ListCategories(repository);
+
+            var output = await useCase.Handle(input, CancellationToken.None);
+
+            var categoriesOrdered = _fixture.CloneCategoriesOrdered(categories, orderBy, searchOrder);
+            output.Should().NotBeNull();
+            output.CurrentPage.Should().Be(1);
+            output.PerPage.Should().Be(categories.Count);
+            output.Total.Should().Be(categories.Count);
+            output.Items.Should().HaveCount(categories.Count);
+            DateTime? LastDate = null;
+            for (int i = 0; i < categoriesOrdered.Count; i++)
+            {
+                var categoryReturned = output.Items[i];
+                var categoryOdered = categoriesOrdered[i];
+                categoryReturned.Id.Should().Be(categoryOdered.Id);
+                categoryReturned!.Name.Should().Be(categoryOdered.Name);
+                categoryReturned.Description.Should().Be(categoryOdered.Description);
+                categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
+                if (LastDate is not null)
+                {
+                    if (searchOrder == SearchOrder.Asc)
+                        Assert.True(categoryReturned.CreatedAt >= LastDate);
+                    else
+                        Assert.True(categoryReturned.CreatedAt <= LastDate);
+                }
+                LastDate = categoryReturned.CreatedAt;
             }
         }
         public void Dispose()

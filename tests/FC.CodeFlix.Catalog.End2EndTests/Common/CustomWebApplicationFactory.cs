@@ -1,7 +1,6 @@
 ﻿using FC.CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Common
@@ -11,20 +10,16 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.UseEnvironment("EndToEndTest");
             builder.ConfigureServices(services =>
             {
-                var dbOptions = services.FirstOrDefault(x =>
-                     x.ServiceType == typeof(DbContextOptions<CodeFlixCatalogDbContext>
-                     )
-                 );
-                if (dbOptions is not null)
-                    services.Remove(dbOptions);
-                services.AddDbContext<CodeFlixCatalogDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase($"end2end-test-db");
-                });
+                var serviceProvider = services.BuildServiceProvider();
+                using var scope = serviceProvider.CreateScope();
+                var context = scope.ServiceProvider.GetService<CodeFlixCatalogDbContext>();
+                ArgumentNullException.ThrowIfNull(context);
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
             });
-
             base.ConfigureWebHost(builder);
         }
     }

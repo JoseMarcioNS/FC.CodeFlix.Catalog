@@ -1,4 +1,5 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
+using FC.CodeFlix.Catalog.End2EndTests.Extentions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -32,7 +33,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Get
             output.Name.Should().Be(category.Name);
             output.Description.Should().Be(category.Description);
             output.IsActive.Should().Be(category.IsActive);
-            output.CreatedAt.Should().Be(category.CreatedAt);
+            output.CreatedAt.TrimMilliseconds().Should().Be(category.CreatedAt.TrimMilliseconds());
         }
         [Fact(DisplayName = nameof(ErrorWhenNotFoundCategory))]
         [Trait("End2End/Api", "Category/Get - Endpoints")]
@@ -56,6 +57,6 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Get
 
         }
         public void Dispose()
-        => _fixture.CleanInMemoryDatabase();
+        => _fixture.CleanDatabase();
     }
 }

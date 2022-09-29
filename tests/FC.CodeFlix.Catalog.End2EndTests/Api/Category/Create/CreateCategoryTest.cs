@@ -66,7 +66,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
             ouput.Detail.Should().Be(messageError);
         }
         public void Dispose()
-        =>  _fixture.CleanInMemoryDatabase();
+        =>  _fixture.CleanDatabase();
         
     }
 }

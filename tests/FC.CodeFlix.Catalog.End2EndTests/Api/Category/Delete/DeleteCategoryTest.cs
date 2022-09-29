@@ -51,6 +51,6 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Delete
 
         }
         public void Dispose()
-        => _fixture.CleanInMemoryDatabase();
+        => _fixture.CleanDatabase();
     }
 }

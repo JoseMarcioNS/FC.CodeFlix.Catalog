@@ -260,8 +260,6 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [InlineData("name", "desc")]
         [InlineData("id", "asc")]
         [InlineData("id", "desc")]
-        [InlineData("createdAt", "asc")]
-        [InlineData("createdAt", "desc")]
         [InlineData("", "asc")]
         public async Task SearchResultsOrdered(string orderBy, string order)
         {
@@ -290,7 +288,48 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
                 categoryReturned!.Name.Should().Be(categoryOdered.Name);
                 categoryReturned.Description.Should().Be(categoryOdered.Description);
                 categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
-                categoryReturned.CreatedAt.Should().Be(categoryOdered.CreatedAt);
+                
+            }
+        }
+        [Theory(DisplayName = nameof(SearchResultsOrderedByDate))]
+        [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+        [InlineData("createdAt", "asc")]
+        [InlineData("createdAt", "desc")]
+         public async Task SearchResultsOrderedByDate(string orderBy, string order)
+        {
+            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var categories = _fixture.GetListCategories();
+            var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
+            await codeFlixCatalogDbContext.AddRangeAsync(categories);
+            await codeFlixCatalogDbContext.SaveChangesAsync();
+            var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+            var searchInput = new SearchInput(1, categories.Count, "", orderBy, searchOrder);
+
+            var searchOutput = await categoryRepository.Search(searchInput, CancellationToken.None);
+
+            var categoriesOrdered = _fixture.CloneCategoriesOrdered(categories, orderBy, searchOrder);
+            searchOutput.Should().NotBeNull();
+            searchOutput.CurrentPage.Should().Be(1);
+            searchOutput.PerPage.Should().Be(categories.Count);
+            searchOutput.Total.Should().Be(categories.Count);
+            searchOutput.Items.Should().HaveCount(categories.Count);
+            DateTime? LastDate = null;
+            for (int i = 0; i < categoriesOrdered.Count; i++)
+            {
+                var categoryReturned = searchOutput.Items[i];
+                var categoryOdered = categoriesOrdered[i];
+                categoryReturned.Id.Should().Be(categoryOdered.Id);
+                categoryReturned!.Name.Should().Be(categoryOdered.Name);
+                categoryReturned.Description.Should().Be(categoryOdered.Description);
+                categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
+                if (LastDate is not null)
+                {
+                    if (searchOrder == SearchOrder.Asc)
+                        Assert.True(categoryReturned.CreatedAt >= LastDate);
+                    else
+                        Assert.True(categoryReturned.CreatedAt <= LastDate);
+                }
+                LastDate = categoryReturned.CreatedAt;
             }
         }
         public void Dispose()

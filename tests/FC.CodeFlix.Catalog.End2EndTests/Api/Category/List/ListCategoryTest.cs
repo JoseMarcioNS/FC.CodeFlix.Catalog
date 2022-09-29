@@ -1,8 +1,12 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.List;
 using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using FC.CodeFlix.Catalog.End2EndTests.Extentions;
 using FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Json;
+using Xunit.Abstractions;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
 {
@@ -10,9 +14,10 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
     public class ListCategoryTest : IDisposable
     {
         private readonly ListCategoryTestFixture _fixture;
+        private readonly ITestOutputHelper _outputHelper;
 
-        public ListCategoryTest(ListCategoryTestFixture fixture)
-        => _fixture = fixture;
+        public ListCategoryTest(ListCategoryTestFixture fixture, ITestOutputHelper outputHelper)
+        => (_fixture, _outputHelper) = (fixture, outputHelper);
 
         [Fact(DisplayName = (nameof(SearchResultsAndTotalByDefault)))]
         [Trait("End2End/Api", "Category/List - Endpoints")]
@@ -147,7 +152,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
                 category!.Name.Should().Be(categoryItem.Name);
                 category.Description.Should().Be(categoryItem.Description);
                 category.IsActive.Should().Be(categoryItem.IsActive);
-                category.CreatedAt.Should().Be(categoryItem.CreatedAt);
+                category.CreatedAt.TrimMilliseconds().Should().Be(categoryItem.CreatedAt.TrimMilliseconds());
             });
 
         }
@@ -157,12 +162,10 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
         [InlineData("name", "desc")]
         [InlineData("id", "asc")]
         [InlineData("id", "desc")]
-        [InlineData("createdAt", "asc")]
-        [InlineData("createdAt", "desc")]
         [InlineData("", "asc")]
         public async Task SearchResultsOrdered(string orderBy, string order)
         {
-           
+
             var categories = _fixture.GetListCategories();
             await _fixture.Persistence.InsertCategories(categories);
             var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
@@ -180,7 +183,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
             output.Total.Should().Be(categories.Count);
             output.Items.Should().HaveCount(categories.Count);
             var categoriesOrdered = _fixture.CloneCategoriesOrdered(categories, orderBy, searchOrder);
-
+            WriteDetailSummary(output, categoriesOrdered);
             for (int i = 0; i < output.Items.Count; i++)
             {
                 var categoryReturned = output.Items[i];
@@ -189,10 +192,69 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.List
                 categoryReturned!.Name.Should().Be(categoryOdered.Name);
                 categoryReturned.Description.Should().Be(categoryOdered.Description);
                 categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
-                categoryReturned.CreatedAt.Should().Be(categoryOdered.CreatedAt);
+
             }
         }
+        [Theory(DisplayName = nameof(SearchResultsOrderedByDate))]
+        [Trait("End2End/Api", "Category/List - Endpoints")]
+        [InlineData("createdAt", "asc")]
+        [InlineData("createdAt", "desc")]
+
+        public async Task SearchResultsOrderedByDate(string orderBy, string order)
+        {
+
+            var categories = _fixture.GetListCategories();
+            await _fixture.Persistence.InsertCategories(categories);
+            var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+            var input = new ListCategoriesInput(1, categories.Count, "", orderBy, searchOrder);
+
+
+            var (response, output) = await _fixture.ApiClient.Get<ListCategoriesOutput>(
+                $"/categories", input);
+
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+            output.Should().NotBeNull();
+            output!.CurrentPage.Should().Be(1);
+            output.PerPage.Should().Be(categories.Count);
+            output.Total.Should().Be(categories.Count);
+            output.Items.Should().HaveCount(categories.Count);
+            var categoriesOrdered = _fixture.CloneCategoriesOrdered(categories, orderBy, searchOrder);
+            WriteDetailSummary(output, categoriesOrdered);
+            DateTime? LastDate = null;
+            for (int i = 0; i < output.Items.Count; i++)
+            {
+                var categoryReturned = output.Items[i];
+                var categoryOdered = categoriesOrdered[i];
+                categoryReturned.Id.Should().Be(categoryOdered.Id);
+                categoryReturned!.Name.Should().Be(categoryOdered.Name);
+                categoryReturned.Description.Should().Be(categoryOdered.Description);
+                categoryReturned.IsActive.Should().Be(categoryOdered.IsActive);
+                if (LastDate is not null)
+                {
+                    if (searchOrder == SearchOrder.Asc)
+                        Assert.True(categoryReturned.CreatedAt >= LastDate);
+                    else
+                        Assert.True(categoryReturned.CreatedAt <= LastDate);
+                }
+                LastDate = categoryReturned.CreatedAt;
+            }
+        }
+
+        private void WriteDetailSummary(ListCategoriesOutput? output, List<DomainEntity.Category> categoriesOrdered)
+        {
+            var count = 0;
+            var expectedList = categoriesOrdered.Select(x => $"{++count} {x.Name} {x.CreatedAt} {JsonConvert.SerializeObject(x)}");
+            count = 0;
+            var itemsList = output!.Items.Select(x => $"{++count} {x.Name} {x.CreatedAt} {JsonConvert.SerializeObject(x)}");
+
+            _outputHelper.WriteLine("Expecteds...");
+            _outputHelper.WriteLine(String.Join('\n', expectedList));
+            _outputHelper.WriteLine("Outputs...");
+            _outputHelper.WriteLine(String.Join('\n', itemsList));
+        }
+
         public void Dispose()
-         => _fixture.CleanInMemoryDatabase();
+         => _fixture.CleanDatabase();
     }
 }

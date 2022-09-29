@@ -18,16 +18,16 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         {
             var categoriesOrdered = (orderBy.ToLower(), searchOrder) switch
             {
-                ("name", SearchOrder.Asc) => categories.OrderBy(x => x.Name).ToList(),
-                ("name", SearchOrder.Desc) => categories.OrderByDescending(x => x.Name).ToList(),
-                ("id", SearchOrder.Asc) => categories.OrderBy(x => x.Id).ToList(),
-                ("id", SearchOrder.Desc) => categories.OrderByDescending(x => x.Id).ToList(),
-                ("createdat", SearchOrder.Asc) => categories.OrderBy(x => x.CreatedAt).ToList(),
-                ("createdat", SearchOrder.Desc) => categories.OrderByDescending(x => x.CreatedAt).ToList(),
-                _ => categories.OrderBy(x => x.Name).ToList()
+                ("name", SearchOrder.Asc) => categories.OrderBy(x => x.Name).ThenBy(x => x.Id),
+                ("name", SearchOrder.Desc) => categories.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+                ("id", SearchOrder.Asc) => categories.OrderBy(x => x.Id),
+                ("id", SearchOrder.Desc) => categories.OrderByDescending(x => x.Id),
+                ("createdat", SearchOrder.Asc) => categories.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => categories.OrderByDescending(x => x.CreatedAt),
+                _ => categories.OrderBy(x => x.Name).ThenBy(x => x.Id)
             };
 
-            return categoriesOrdered;
+            return categoriesOrdered.ToList();
         }
        
     }
