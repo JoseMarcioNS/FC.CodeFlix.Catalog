@@ -1,4 +1,5 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
+﻿using FC.CodeFlix.Catalog.Api.Models;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
 using FC.CodeFlix.Catalog.End2EndTests.Api.Category.Common;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
@@ -10,21 +11,20 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
     }
     public class UpdateCategoryTestFixture : CategoryCommonFixture
     {
-        public UpdateCategoryInput GetUpdateCategoryInput(Guid id)
+        public UpdateCategoryApiInput GetUpdateCategoryApiInput()
          => new(
-                id,
                 GetValidName(),
                 GetValidDescription(),
                 GetRandomActive());
 
-        public UpdateCategoryInput GetInputInvalidNameMinLenght(DomainEntity.Category input)
-         => new(input.Id, GetInvalidNameMinLenght(), input.Description, input.IsActive);
+        public UpdateCategoryApiInput GetInputInvalidNameMinLenght(DomainEntity.Category input)
+         => new(GetInvalidNameMinLenght(), input.Description, input.IsActive);
 
-        public UpdateCategoryInput GetInputInvalidNameMaxLeght(DomainEntity.Category input)
-        => new(input.Id, GetInvalidNameMaxLeght(), input.Description, input.IsActive);
+        public UpdateCategoryApiInput GetInputInvalidNameMaxLeght(DomainEntity.Category input)
+        => new(GetInvalidNameMaxLeght(), input.Description, input.IsActive);
 
-        public UpdateCategoryInput GetInputInvalidDescriptionMaxLeght(DomainEntity.Category input)
-        => new(input.Id, input.Name, GetInvalidDescriptionMaxLeght(), input.IsActive);
+        public UpdateCategoryApiInput GetInputInvalidDescriptionMaxLeght(DomainEntity.Category input)
+        => new(input.Name, GetInvalidDescriptionMaxLeght(), input.IsActive);
         
     }
 }

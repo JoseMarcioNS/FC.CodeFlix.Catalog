@@ -1,3 +1,4 @@
+using FC.CodeFlix.Catalog.Api.Models;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
@@ -47,14 +48,17 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
             await _mediator.Send(new DeleteCategoryInput(id), cancellationToken);
             return NoContent();
         }
-        [HttpPut]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input,
+        public async Task<IActionResult> Update(
+            [FromBody] UpdateCategoryApiInput input,
+            [FromRoute] Guid id,
             CancellationToken cancellationToken)
         {
-            var output = await _mediator.Send(input, cancellationToken);
+            var category = new UpdateCategoryInput(id, input.Name, input.Description, input.IsActive);
+            var output = await _mediator.Send(category, cancellationToken);
             return Ok(output);
         }
         [HttpGet]

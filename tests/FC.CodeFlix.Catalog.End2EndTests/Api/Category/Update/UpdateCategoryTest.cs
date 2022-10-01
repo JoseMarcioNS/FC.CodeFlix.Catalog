@@ -1,4 +1,5 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
+﻿using FC.CodeFlix.Catalog.Api.Models;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,10 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             var categories = _fixture.GetListCategories();
             var category = categories[5];
             await _fixture.Persistence.InsertCategories(categories);
-            var input = _fixture.GetUpdateCategoryInput(category.Id);
+            var input = _fixture.GetUpdateCategoryApiInput();
 
             var (response, output) = await _fixture.ApiClient.Put<CategoryModelOuput>(
-                "/categories",
+                $"/categories/{category.Id}",
                 input
                 );
 
@@ -50,14 +51,13 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             var categories = _fixture.GetListCategories();
             var category = categories[5];
             await _fixture.Persistence.InsertCategories(categories);
-            var input = new UpdateCategoryInput(
-                category.Id,
-                _fixture.GetValidName(),
+            var input = new UpdateCategoryApiInput(
+                 _fixture.GetValidName(),
                 category.Description,
                 category.IsActive);
 
             var (response, output) = await _fixture.ApiClient.Put<CategoryModelOuput>(
-                "/categories",
+                $"/categories/{category.Id}",
                 input
                 );
 
@@ -83,14 +83,13 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             var categories = _fixture.GetListCategories();
             var category = categories[5];
             await _fixture.Persistence.InsertCategories(categories);
-            var input = new UpdateCategoryInput(
-                category.Id,
-                _fixture.GetValidName(),
+            var input = new UpdateCategoryApiInput(
+                 _fixture.GetValidName(),
                 _fixture.GetValidDescription(),
                 category.IsActive);
 
             var (response, output) = await _fixture.ApiClient.Put<CategoryModelOuput>(
-                "/categories",
+                $"/categories/{category.Id}",
                 input
                 );
 
@@ -115,13 +114,13 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
         {
             var categories = _fixture.GetListCategories();
             await _fixture.Persistence.InsertCategories(categories);
-            var input = new UpdateCategoryInput(
-                 Guid.NewGuid(),
-                _fixture.GetValidName(),
+            var categoryId = Guid.NewGuid();
+            var input = new UpdateCategoryApiInput(
+                 _fixture.GetValidName(),
                 _fixture.GetValidDescription());
 
             var (response, output) = await _fixture.ApiClient.Put<ProblemDetails>(
-                "/categories",
+                $"/categories/{categoryId}",
                 input
                 );
 
@@ -131,7 +130,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             output!.Title.Should().Be("Not Found");
             output.Type.Should().Be("NotFound");
             output.Status.Should().Be(StatusCodes.Status404NotFound);
-            output.Detail.Should().Be($"Category '{input.Id}' not found.");
+            output.Detail.Should().Be($"Category '{categoryId}' not found.");
 
         }
         [Theory(DisplayName = nameof(ErrorProblesDatailsCategory))]
@@ -140,7 +139,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             MemberType = typeof(UpdateCategoryTestGenerationData))]
         public async Task ErrorProblesDatailsCategory(
             DomainEntity.Category category,
-            UpdateCategoryInput input,
+            UpdateCategoryApiInput input,
             string errorMessage)
         {
             var categories = _fixture.GetListCategories();
@@ -148,7 +147,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Update
             await _fixture.Persistence.InsertCategories(categories);
            
             var (response, output) = await _fixture.ApiClient.Put<ProblemDetails>(
-                "/categories",
+                $"/categories/{category.Id}",
                 input
                 );
 
