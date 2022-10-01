@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using FC.CodeFlix.Catalog.Api.Extentions.Policies;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Json;
 
@@ -7,11 +8,18 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
     public class ApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _serializerOptions;
 
         public ApiClient(HttpClient httpClient)
-      => _httpClient = httpClient;
-
-        public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
+        {
+            _httpClient = httpClient;
+            _serializerOptions = new()
+            {
+                PropertyNamingPolicy = new JsonSnakeCasePolicy(),
+                PropertyNameCaseInsensitive = true
+            };
+        }
+      public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
             string route,
             object payload
             ) where TOutput : class
@@ -19,7 +27,8 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
             var response = await _httpClient.PostAsync(
                 route,
                 new StringContent(
-                     JsonSerializer.Serialize(payload),
+                     JsonSerializer.Serialize(payload,
+                     _serializerOptions),
                      Encoding.UTF8,
                      "application/json"
                     )
@@ -55,7 +64,8 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
             var response = await _httpClient.PutAsync(
                 route,
                 new StringContent(
-                     JsonSerializer.Serialize(payload),
+                     JsonSerializer.Serialize(payload,
+                     _serializerOptions),
                      Encoding.UTF8,
                      "application/json"
                     )
@@ -65,7 +75,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
 
             return (response, output);
         }
-        private static async Task<TOutput?> GetOutpu<TOutput>(HttpResponseMessage response) where TOutput : class
+        private async Task<TOutput?> GetOutpu<TOutput>(HttpResponseMessage response) where TOutput : class
         {
             var outputString = await response.Content.ReadAsStringAsync();
             TOutput? output = null;
@@ -73,10 +83,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
             {
                 output = JsonSerializer.Deserialize<TOutput>(
                     outputString,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
+                    _serializerOptions
                 );
             }
 
@@ -87,7 +94,9 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Common
             if (queryStringParametersObject is null)
                 return route;
 
-            var parameters = JsonSerializer.Serialize(queryStringParametersObject);
+            var parameters = JsonSerializer.Serialize(
+                 queryStringParametersObject,
+                 _serializerOptions);
             var parametersDictionary = Newtonsoft.Json.JsonConvert
                 .DeserializeObject<Dictionary<string, string>>(parameters);
 

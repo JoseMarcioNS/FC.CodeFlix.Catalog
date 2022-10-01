@@ -66,7 +66,7 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
            [FromQuery] int? page,
-           [FromQuery] int? perPage,
+           [FromQuery(Name = "per_page")] int? perPage,
            [FromQuery] string? search,
            [FromQuery] string? sort,
            [FromQuery] SearchOrder? dir
