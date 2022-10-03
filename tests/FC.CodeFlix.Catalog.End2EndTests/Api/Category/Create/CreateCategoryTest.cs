@@ -1,21 +1,21 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
+﻿using FC.CodeFlix.Catalog.Api.Models.Responses;
+using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
 {
-    [Collection(nameof(CreateCategoryTestFixture))]
-    public class CreateCategoryTest : IDisposable
+ [Collection(nameof(CreateCategoryTestFixture))]
+  public class CreateCategoryTest : IDisposable
     {
         private readonly CreateCategoryTestFixture _fixture;
 
         public CreateCategoryTest(CreateCategoryTestFixture fixture)
         {
             _fixture = fixture;
-            
+
         }
 
         [Fact(DisplayName = (nameof(CreateCategory)))]
@@ -24,19 +24,20 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
         {
             var input = _fixture.CreateCategoryInput();
 
-            var (response, ouput) = await _fixture.ApiClient.Post<CategoryModelOuput>(
+            var (response, ouput) = await _fixture.ApiClient.Post<ApiResponse<CategoryModelOuput>>(
                  "/categories",
                  input
                  );
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.Created);
             ouput.Should().NotBeNull();
-            ouput!.Id.Should().NotBeEmpty();
-            ouput.Name.Should().Be(input.Name);
-            ouput.Description.Should().Be(input.Description);
-            ouput.IsActive.Should().Be(input.IsActive);
-            ouput.CreatedAt.Should().NotBeSameDateAs(default);
-            var dbCategory = await _fixture.Persistence.GetById(ouput.Id);
+            ouput!.Data.Should().NotBeNull();
+            ouput.Data.Id.Should().NotBeEmpty();
+            ouput.Data.Name.Should().Be(input.Name);
+            ouput.Data.Description.Should().Be(input.Description);
+            ouput.Data.IsActive.Should().Be(input.IsActive);
+            ouput.Data.CreatedAt.Should().NotBeSameDateAs(default);
+            var dbCategory = await _fixture.Persistence.GetById(ouput!.Data.Id);
             dbCategory.Should().NotBeNull();
             dbCategory!.Id.Should().NotBeEmpty();
             dbCategory.Name.Should().Be(input.Name);
@@ -66,7 +67,7 @@ namespace FC.CodeFlix.Catalog.End2EndTests.Api.Category.Create
             ouput.Detail.Should().Be(messageError);
         }
         public void Dispose()
-        =>  _fixture.CleanDatabase();
-        
+        => _fixture.CleanDatabase();
+
     }
 }

@@ -1,4 +1,5 @@
 using FC.CodeFlix.Catalog.Api.Models;
+using FC.CodeFlix.Catalog.Api.Models.Responses;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
@@ -21,23 +22,23 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         => _mediator = mediator;
 
         [HttpPost]
-        [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOuput>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] CreateCategoryInput input,
             CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(input, cancellationToken);
-            return CreatedAtAction(nameof(Create), output.Id, output);
+            return CreatedAtAction(nameof(Create), output.Id, new ApiResponse<CategoryModelOuput>(output));
         }
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOuput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get([FromRoute] Guid Id,
             CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetCategoryInput(Id), cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponse<CategoryModelOuput>(output));
         }
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status204NoContent)]
@@ -49,7 +50,7 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
             return NoContent();
         }
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(typeof(CategoryModelOuput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOuput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update(
@@ -59,10 +60,10 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
         {
             var category = new UpdateCategoryInput(id, input.Name, input.Description, input.IsActive);
             var output = await _mediator.Send(category, cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponse<CategoryModelOuput>(output));
         }
         [HttpGet]
-        [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponseList<ListCategoriesOutput>), StatusCodes.Status200OK)]
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
            [FromQuery] int? page,
@@ -81,7 +82,8 @@ namespace FC.CodeFlix.Catalog.Api.Controllers
             if (dir is not null) input.Dir = dir.Value;
 
             var output = await _mediator.Send(input, cancellationToken);
-            return Ok(output);
+            var response = new ApiResponseList<CategoryModelOuput>(output);
+            return Ok(response);
         }
     }
 }
