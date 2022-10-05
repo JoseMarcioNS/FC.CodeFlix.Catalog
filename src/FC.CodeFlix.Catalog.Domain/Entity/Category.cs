@@ -32,7 +32,7 @@ namespace FC.CodeFlix.Catalog.Domain.Entity
             Validate();
         }
 
-        public void Deactive()
+        public void Deactivate()
         {
             IsActive = false;
             Validate();

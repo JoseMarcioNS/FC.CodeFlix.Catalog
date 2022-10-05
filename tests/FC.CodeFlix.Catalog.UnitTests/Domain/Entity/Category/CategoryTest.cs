@@ -136,13 +136,13 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category
 
             category.IsActive.Should().BeTrue();
         }
-        [Fact(DisplayName = nameof(InstantiateIsDeactive))]
+        [Fact(DisplayName = nameof(InstantiateIsDeactivate))]
         [Trait("Domain", "Category - Aggregates")]
-        public void InstantiateIsDeactive()
+        public void InstantiateIsDeactivate()
         {
             var category = _fixture.GetValidCategory();
 
-            category.Deactive();
+            category.Deactivate();
 
             category.IsActive.Should().BeFalse();
         }

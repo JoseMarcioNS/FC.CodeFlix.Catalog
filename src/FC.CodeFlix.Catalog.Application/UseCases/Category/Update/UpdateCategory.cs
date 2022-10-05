@@ -20,7 +20,7 @@ namespace FC.CodeFlix.Catalog.Application.UseCases.Category.Update
                 if (request.IsActive.Value)
                     category.Active();
                 else
-                    category.Deactive();
+                    category.Deactivate();
 
             await _categoryRepository.Update(category, cancellationToken);
             await _unitOfWork.Commit(cancellationToken);
