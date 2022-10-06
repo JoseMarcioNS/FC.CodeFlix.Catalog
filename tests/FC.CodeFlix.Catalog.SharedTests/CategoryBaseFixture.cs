@@ -24,7 +24,6 @@ namespace FC.CodeFlix.Catalog.SharedTests
 
             return description;
         }
-        public bool GetRandomActive() => new Random().NextDouble() > 0.5;
         public Category GetValidCategory()
            => new(GetValidName(),
                   GetValidDescription(),

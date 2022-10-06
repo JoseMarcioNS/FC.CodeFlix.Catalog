@@ -1,5 +1,4 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
-using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
+﻿using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
 
 namespace FC.CodeFlix.Catalog.Application.UseCases.Category.Common
 {

@@ -9,6 +9,6 @@ namespace FC.CodeFlix.Catalog.SharedTests.Common
         public BaseFixture()
              => Faker = new Faker("pt_BR");
 
-      
+        public bool GetRandomActive() => new Random().NextDouble() > 0.5;
     }
 }

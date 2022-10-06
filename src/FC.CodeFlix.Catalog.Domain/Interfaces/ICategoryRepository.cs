@@ -7,5 +7,6 @@ namespace FC.CodeFlix.Catalog.Domain.Interfaces
     public interface ICategoryRepository : IGenericRepository<Category>
         , ISearchableRepository<Category>
     {
+        Task<List<Guid>> GetCategoriesByIds(List<Guid> ids, CancellationToken cancellationToken);
     }
 }
