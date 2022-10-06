@@ -13,7 +13,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Create
         => _fixture = fixture;
 
         [Fact(DisplayName = nameof(Create))]
-        [Trait("Applcation", "Genre - Usecases")]
+        [Trait("Applcation", "CreateGenre - Usecases")]
         public async Task Create()
         {
             var repositoryMock = _fixture.GetGenreRepositoryMock();
@@ -37,7 +37,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Create
 
         }
         [Fact(DisplayName = nameof(CreateWithRelatedcategories))]
-        [Trait("Applcation", "Genre - Usecases")]
+        [Trait("Applcation", "CreateGenre - Usecases")]
         public async Task CreateWithRelatedcategories()
         {
             var input = _fixture.GetCreateGenreInputWithCategories();
@@ -71,7 +71,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Create
                  It.IsAny<CancellationToken>()), Times.Once);
         }
         [Fact(DisplayName = nameof(ThrowExceptionWnenRelatedCategoryNotFound))]
-        [Trait("Applcation", "Genre - Usecases")]
+        [Trait("Applcation", "CreateGenre - Usecases")]
         public async Task ThrowExceptionWnenRelatedCategoryNotFound()
         {
             var input = _fixture.GetCreateGenreInputWithCategories();
@@ -95,7 +95,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Create
                           It.IsAny<CancellationToken>()), Times.Once);
         }
         [Theory(DisplayName = nameof(ThrowExceptionWnenInvaldName))]
-        [Trait("Applcation", "Genre - Usecases")]
+        [Trait("Applcation", "CreateGenre - Usecases")]
         [InlineData("")]
         [InlineData("  ")]
         [InlineData(null)]

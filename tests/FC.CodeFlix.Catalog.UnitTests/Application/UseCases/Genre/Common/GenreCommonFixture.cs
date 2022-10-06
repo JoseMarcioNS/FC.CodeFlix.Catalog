@@ -10,5 +10,19 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Common
         public Mock<IGenreRepository> GetGenreRepositoryMock() => new();
         public Mock<ICategoryRepository> GetCategoryRepositoryMock() => new();
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
+        public DomainEntity.Genre GetGenre()
+              => new(GetValidName(), GetRandomActive());
+        public DomainEntity.Genre GetGenreWithCategories()
+        {
+            var genre = new DomainEntity.Genre(GetValidName(), GetRandomActive());
+            var categoriesIds = GetRandomCategoriesIs();
+            categoriesIds.ForEach(genre.AddCategory);
+            return genre;
+        }
+             
+        public List<Guid> GetRandomCategoriesIs(int length = 10)
+              => Enumerable.Range(1
+                 , new Random().Next(1, length))
+                .Select(_ => Guid.NewGuid()).ToList();
     }
 }
