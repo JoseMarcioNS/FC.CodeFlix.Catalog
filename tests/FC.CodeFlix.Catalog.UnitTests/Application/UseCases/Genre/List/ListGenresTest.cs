@@ -1,29 +1,30 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.List;
+using FC.CodeFlix.Catalog.Application.UseCases.Genre.List;
 using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List;
 
-namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
+namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.List
 {
-    [Collection(nameof(ListCategoriesTestFixture))]
-    public class ListCategoriesTest
+    [Collection(nameof(ListGenresTestFixture))]
+    public class ListGenresTest
     {
-        private readonly ListCategoriesTestFixture _fixture;
+        private readonly ListGenresTestFixture _fixture;
 
-        public ListCategoriesTest(ListCategoriesTestFixture fixture)
-        => _fixture = fixture;
-
-        [Fact(DisplayName = nameof(ListCategories))]
-        [Trait("Application", "ListCategoriesTest - UseCases")]
-        public async Task ListCategories()
+        public ListGenresTest(ListGenresTestFixture fixture)
+            => _fixture = fixture;
+        [Fact(DisplayName = nameof(GetListGenres))]
+        [Trait("Applcation", "ListGenres - Usecases")]
+        public async Task GetListGenres()
         {
-            var repositoryMock = _fixture.GetCategoryRepositoryMock();
-            var categoriesList = _fixture.ListCategories();
-            var input = _fixture.GetListCategoriesInput();
-            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
+            var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var categoriesList = _fixture.GetGenres();
+            var input = _fixture.GetListGenresInput();
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
                  currentPage: input.Page,
                  perPage: input.PerPage,
                  items: categoriesList,
                  total: new Random().Next(70, 100));
-            repositoryMock.Setup(x => x.Search(
+            genreRepositoryMock.Setup(x => x.Search(
                  It.Is<SearchInput>(searchInput =>
                       searchInput.Page == input.Page
                       && searchInput.PerPage == input.PerPage
@@ -33,7 +34,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                       ),
                  It.IsAny<CancellationToken>()
                 )).ReturnsAsync(outputRepositorySearch);
-            var useCase = new ListCategories(repositoryMock.Object);
+            var useCase = new ListGenres(genreRepositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -47,12 +48,11 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                 var reposiotryCategory = outputRepositorySearch.Items.FirstOrDefault(x => x.Id == outputItem.Id);
                 outputItem.Should().NotBeNull();
                 outputItem.Name.Should().Be(reposiotryCategory!.Name);
-                outputItem.Description.Should().Be(reposiotryCategory.Description);
                 outputItem.IsActive.Should().Be(reposiotryCategory.IsActive);
                 outputItem.CreatedAt.Should().Be(reposiotryCategory.CreatedAt);
 
             });
-            repositoryMock.Verify(x => x.Search(
+            genreRepositoryMock.Verify(x => x.Search(
                       It.Is<SearchInput>(searchInput =>
                       searchInput.Page == input.Page
                       && searchInput.PerPage == input.PerPage
@@ -62,17 +62,18 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                     ),
                  It.IsAny<CancellationToken>()
                 ), Times.Once);
+
         }
         [Fact(DisplayName = nameof(ListCategoriesOkWhenEmpty))]
-        [Trait("Application", "ListCategoriesTest - UseCases")]
+        [Trait("Application", "ListGenres - UseCases")]
         public async Task ListCategoriesOkWhenEmpty()
         {
-            var repositoryMock = _fixture.GetCategoryRepositoryMock();
-            var input = _fixture.GetListCategoriesInput();
-            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
+            var repositoryMock = _fixture.GetGenreRepositoryMock();
+            var input = _fixture.GetListGenresInput();
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
                  currentPage: input.Page,
                  perPage: input.PerPage,
-                 items: new List<DomainEntity.Category>().AsReadOnly(),
+                 items: new List<DomainEntity.Genre>().AsReadOnly(),
                  total: 0);
             repositoryMock.Setup(x => x.Search(
                  It.Is<SearchInput>(searchInput =>
@@ -84,7 +85,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                       ),
                  It.IsAny<CancellationToken>()
                 )).ReturnsAsync(outputRepositorySearch);
-            var useCase = new ListCategories(repositoryMock.Object);
+            var useCase = new ListGenres(repositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -105,20 +106,20 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                ), Times.Once);
         }
         [Theory(DisplayName = nameof(ListCategoriesWithSomeParemeters))]
-        [Trait("Application", "ListCategoriesTest - UseCases")]
+        [Trait("Application", "ListGenres - UseCases")]
         [MemberData(
-            nameof(ListCategoriesTestGeneratorData.GetListCategoriesInputWithDiferentsParameters),
+            nameof(ListGenresTestGeneratorData.GetListGeresInputWithDiferentsParameters),
             parameters: 14,
-            MemberType = typeof(ListCategoriesTestGeneratorData)
+            MemberType = typeof(ListGenresTestGeneratorData)
             )]
-        public async Task ListCategoriesWithSomeParemeters(ListCategoriesInput input)
+        public async Task ListCategoriesWithSomeParemeters(ListGenresInput input)
         {
-            var repositoryMock = _fixture.GetCategoryRepositoryMock();
-            var categoriesList = _fixture.ListCategories();
-            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
+            var repositoryMock = _fixture.GetGenreRepositoryMock();
+            var geresList = _fixture.GetGenres();
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
                currentPage: input.Page,
                perPage: input.PerPage,
-               items: categoriesList,
+               items: geresList,
                total: 70);
             repositoryMock.Setup(x => x.Search(
                  It.Is<SearchInput>(searchInput =>
@@ -130,7 +131,7 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                       ),
                  It.IsAny<CancellationToken>()
                 )).ReturnsAsync(outputRepositorySearch);
-            var useCase = new ListCategories(repositoryMock.Object);
+            var useCase = new ListGenres(repositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -144,7 +145,6 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
                 var reposiotryCategory = outputRepositorySearch.Items.FirstOrDefault(x => x.Id == outputItem.Id);
                 outputItem.Should().NotBeNull();
                 outputItem.Name.Should().Be(reposiotryCategory!.Name);
-                outputItem.Description.Should().Be(reposiotryCategory.Description);
                 outputItem.IsActive.Should().Be(reposiotryCategory.IsActive);
                 outputItem.CreatedAt.Should().Be(reposiotryCategory.CreatedAt);
 
@@ -162,3 +162,4 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Category.List
         }
     }
 }
+

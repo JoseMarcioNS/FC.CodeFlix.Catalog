@@ -1,5 +1,4 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Common;
-using FC.CodeFlix.Catalog.Domain.Interfaces;
+﻿using FC.CodeFlix.Catalog.Domain.Interfaces;
 
 namespace FC.CodeFlix.Catalog.Application.UseCases.Category.List
 {
@@ -12,21 +11,8 @@ namespace FC.CodeFlix.Catalog.Application.UseCases.Category.List
 
         public async Task<ListCategoriesOutput> Handle(ListCategoriesInput request, CancellationToken cancellationToken)
         {
-            var searchOutput = await _categoryRepository.Search(
-                                                          new(request.Page,
-                                                          request.PerPage,
-                                                          request.Search,
-                                                          request.Sort,
-                                                          request.Dir
-                                                          )
-                                                          , cancellationToken);
-
-            return new ListCategoriesOutput(
-                searchOutput.CurrentPage,
-                searchOutput.PerPage,
-                searchOutput.Total,
-                searchOutput.Items.Select(CategoryModelOuput.FromCategory).ToList()
-                );
+            var searchOutput = await _categoryRepository.Search(request.ToSearchInput(), cancellationToken);
+            return ListCategoriesOutput.FromSearchOutput(searchOutput);
         }
     }
 }

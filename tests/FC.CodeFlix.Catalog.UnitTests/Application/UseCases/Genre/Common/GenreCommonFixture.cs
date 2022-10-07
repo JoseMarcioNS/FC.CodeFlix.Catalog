@@ -12,6 +12,15 @@ namespace FC.CodeFlix.Catalog.UnitTests.Application.UseCases.Genre.Common
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
         public DomainEntity.Genre GetGenre()
               => new(GetValidName(), GetRandomActive());
+        public List<DomainEntity.Genre> GetGenres(int length = 10)
+        {
+            List<DomainEntity.Genre> genres = new();
+            for (int i = 0; i < length; i++)
+                genres.Add(GetGenreWithCategories());
+
+            return genres;
+        }
+            
         public DomainEntity.Genre GetGenreWithCategories()
         {
             var genre = new DomainEntity.Genre(GetValidName(), GetRandomActive());
