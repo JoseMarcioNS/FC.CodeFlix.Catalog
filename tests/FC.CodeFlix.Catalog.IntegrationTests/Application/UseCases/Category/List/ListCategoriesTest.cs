@@ -16,7 +16,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         [Trait("Integration/Application", "CategoryRepository - UseCases")]
         public async Task SearchResultsAndTotal()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories(10);
             var repository = new CategoryRepository(context);
             await context.AddRangeAsync(categories);
@@ -46,7 +46,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         [Trait("Integration/Application", "CategoryRepository - UseCases")]
         public async Task SearchResultsIsEmpty()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var input = new ListCategoriesInput(1, 20, "", "", SearchOrder.Asc);
             var useCase = new ListCategories(repository);
@@ -71,7 +71,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
             int expectedQuantityItems
             )
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories(quantityCategoryGenerator);
             var repository = new CategoryRepository(context);
             await context.AddRangeAsync(categories);
@@ -112,7 +112,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
             int expectedQuantitytotalItems
             )
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.CreateCategoriesWithNames(
                 new string[] {
                     "Action",
@@ -158,7 +158,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         [InlineData("", "asc")]
         public async Task SearchResultsOrdered(string orderBy, string order)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var repository = new CategoryRepository(context);
             await context.AddRangeAsync(categories);
@@ -194,7 +194,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
         
         public async Task SearchResultsOrderedByDate(string orderBy, string order)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var repository = new CategoryRepository(context);
             await context.AddRangeAsync(categories);
@@ -231,6 +231,6 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
             }
         }
         public void Dispose()
-                  => _fixture.CleanInMemoryDatabase();
+                  => _fixture.CommonFixture.CleanInMemoryDatabase();
     }
 }

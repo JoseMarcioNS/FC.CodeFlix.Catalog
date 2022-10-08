@@ -1,5 +1,5 @@
-﻿using FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
-using FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Common;
+﻿using FC.CodeFlix.Catalog.SharedTests;
+
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
 {
     [CollectionDefinition(nameof(GetCategoryTestFixture))]
@@ -8,6 +8,8 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
     }
     public class GetCategoryTestFixture : CategoryBaseFixture
     {
-
+        public CommonFixture CommonFixture;
+        public GetCategoryTestFixture()
+        => CommonFixture = new CommonFixture();
     }
 }

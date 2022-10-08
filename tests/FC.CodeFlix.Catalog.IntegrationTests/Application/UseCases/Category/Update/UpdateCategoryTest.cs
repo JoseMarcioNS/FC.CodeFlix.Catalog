@@ -21,7 +21,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
         ]
         public async void UpdateCategoryOk(DomainEntity.Category category, UpdateCategoryInput input)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             await context.Categories.AddAsync(category);
@@ -46,7 +46,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
             DomainEntity.Category category,
             UpdateCategoryInput exampleCategory)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var input = new UpdateCategoryInput(
@@ -74,7 +74,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
           MemberType = typeof(UpdateCategoryTestGenerationData))]
         public async void UpdateCategoryProvidingOnlyName(DomainEntity.Category category, UpdateCategoryInput exampleCategory)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var input = new UpdateCategoryInput(
@@ -103,7 +103,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
            DomainEntity.Category category,
            UpdateCategoryInput input, string ErrorMessage)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             await context.Categories.AddAsync(category);
@@ -119,7 +119,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
         [Trait("Integration/Application", "UpdateCategoryTest - UseCaes")]
         public async void ThrowExceptioWhenNotFoundCategory()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var input = _fixture.GetUpdateCategoryInput();
@@ -132,6 +132,6 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
 
         }
         public void Dispose()
-        => _fixture.CleanInMemoryDatabase();
+        => _fixture.CommonFixture.CleanInMemoryDatabase();
     }
 }

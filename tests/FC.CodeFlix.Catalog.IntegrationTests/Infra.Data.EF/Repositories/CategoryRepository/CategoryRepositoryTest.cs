@@ -15,7 +15,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
         public async Task Insert()
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await categoryRepository.Insert(category, CancellationToken.None);
@@ -38,7 +38,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [InlineData(3)]
         public async Task Get(int index)
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var category = categories[index];
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
@@ -58,7 +58,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
         public async Task GetThowExceptionWhenNotFound()
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
@@ -79,7 +79,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [InlineData(3)]
         public async Task Update(int index)
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var category = categories[index];
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
@@ -104,7 +104,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
         public async Task Delete()
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var category = _fixture.GetValidCategory();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await categoryRepository.Insert(category, CancellationToken.None);
@@ -125,7 +125,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
         public async Task SearchResultsAndTotal()
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await codeFlixCatalogDbContext.AddRangeAsync(categories);
@@ -154,7 +154,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
         public async Task SearchResultsIsEmpty()
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
 
@@ -178,7 +178,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             int expectedQuantityItems
             )
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories(quantityCategoryGenerator);
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await codeFlixCatalogDbContext.AddRangeAsync(categories);
@@ -218,7 +218,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             int expectedQuantitytotalItems
             )
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.CreateCategoriesWithNames(
                 new string[] {
                     "Action",
@@ -263,7 +263,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [InlineData("", "asc")]
         public async Task SearchResultsOrdered(string orderBy, string order)
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await codeFlixCatalogDbContext.AddRangeAsync(categories);
@@ -297,7 +297,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
         [InlineData("createdAt", "desc")]
          public async Task SearchResultsOrderedByDate(string orderBy, string order)
         {
-            var codeFlixCatalogDbContext = _fixture.CreateDbContext();
+            var codeFlixCatalogDbContext = _fixture.CommonFixture.CreateDbContext();
             var categories = _fixture.GetListCategories();
             var categoryRepository = new Repository.CategoryRepository(codeFlixCatalogDbContext);
             await codeFlixCatalogDbContext.AddRangeAsync(categories);
@@ -333,7 +333,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             }
         }
         public void Dispose()
-            => _fixture.CleanInMemoryDatabase();
+            => _fixture.CommonFixture.CleanInMemoryDatabase();
 
     }
 }

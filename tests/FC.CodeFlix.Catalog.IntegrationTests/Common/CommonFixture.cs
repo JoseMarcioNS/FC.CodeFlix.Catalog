@@ -1,8 +1,6 @@
-﻿using FC.CodeFlix.Catalog.SharedTests;
-
-namespace FC.CodeFlix.Catalog.IntegrationTests.Common
+﻿namespace FC.CodeFlix.Catalog.IntegrationTests.Common
 {
-    public class CommonFixture : CategoryBaseFixture
+    public class CommonFixture 
     {
         public CodeFlixCatalogDbContext CreateDbContext()
         {

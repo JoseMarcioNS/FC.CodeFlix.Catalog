@@ -1,12 +1,18 @@
 ﻿using FC.CodeFlix.Catalog.Domain.Entity;
 using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using FC.CodeFlix.Catalog.SharedTests;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository
 {
     [CollectionDefinition(nameof(CategoryRepositoryTestFixture))]
     public class CategoryRepositoryTestFixtureCollection : ICollectionFixture<CategoryRepositoryTestFixture> { }
-    public class CategoryRepositoryTestFixture : CommonFixture
+    public class CategoryRepositoryTestFixture : CategoryBaseFixture
     {
+        public CommonFixture CommonFixture;
+        public CategoryRepositoryTestFixture()
+        => CommonFixture = new CommonFixture();
+        
+
         public List<Category> CreateCategoriesWithNames(string[] names)
           => names.Select(n =>
           {

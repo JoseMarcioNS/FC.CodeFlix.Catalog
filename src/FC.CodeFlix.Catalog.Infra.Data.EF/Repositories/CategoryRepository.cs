@@ -58,5 +58,10 @@ namespace FC.CodeFlix.Catalog.Infra.Data.EF.Repositories
             };
             return queryOrdered;
         }
+
+        public Task<List<Guid>> GetCategoriesByIds(List<Guid> ids, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

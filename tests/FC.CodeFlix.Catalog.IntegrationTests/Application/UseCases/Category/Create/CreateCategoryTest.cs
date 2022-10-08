@@ -1,7 +1,7 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
 using FC.CodeFlix.Catalog.Domain.Exceptions;
 using FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
-using FluentAssertions;
+
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Create
 {
@@ -17,7 +17,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
         [Trait("Integration/Appication", "UseCases - Category")]
         public async void CreateCategory()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var useCase = new CreateCategory(repository, unitOfWork);
@@ -49,7 +49,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
                    )]
         public async void ThrowWhenCreateCategaryFail(CreateCategoryInput input, string exeptionMessage)
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var useCase = new CreateCategory(repository, unitOfWork);
@@ -62,7 +62,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
             categoriesList.Should().HaveCount(0);
         }
         public void Dispose()
-         => _fixture.CleanInMemoryDatabase();
+         => _fixture.CommonFixture.CleanInMemoryDatabase();
 
     }
 }

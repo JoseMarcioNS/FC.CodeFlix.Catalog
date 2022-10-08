@@ -1,5 +1,6 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Create;
-using FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Common;
+using FC.CodeFlix.Catalog.SharedTests;
+
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Create
 {
     [CollectionDefinition(nameof(CreateCategoryTestFixture))]
@@ -8,6 +9,10 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
     }
     public class CreateCategoryTestFixture : CategoryBaseFixture
     {
+        public CommonFixture CommonFixture;
+        public CreateCategoryTestFixture()
+        => CommonFixture = new CommonFixture();
+
         public CreateCategoryInput GetCreateCategoryInput() => new(
                          GetValidName(),
                          GetValidDescription(),

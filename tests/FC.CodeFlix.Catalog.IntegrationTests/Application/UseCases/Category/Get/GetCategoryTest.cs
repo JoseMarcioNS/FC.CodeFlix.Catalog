@@ -16,7 +16,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
         [Trait("Integration/Application", "GetCategoryTest - UseCases")]
         public async Task GetCategory()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var category = _fixture.GetValidCategory();
             await repository.Insert(category, CancellationToken.None);
@@ -37,7 +37,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
         [Trait("Integration/Application", "GetCategoryTest - UseCases")]
         public async void ThrowExceptionWhenNotFoundCategory()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var category = _fixture.GetValidCategory();
             await repository.Insert(category, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Get
 
         }
         public void Dispose()
-       => _fixture.CleanInMemoryDatabase();
+       => _fixture.CommonFixture.CleanInMemoryDatabase();
 
     }
 }

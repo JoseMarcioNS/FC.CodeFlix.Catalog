@@ -1,5 +1,5 @@
 ﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.Update;
-using FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Common;
+using FC.CodeFlix.Catalog.SharedTests;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Update
 {
@@ -9,6 +9,9 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
     }
     public class UpdateCategoryTestFixture : CategoryBaseFixture
     {
+        public CommonFixture CommonFixture;
+        public UpdateCategoryTestFixture()
+        => CommonFixture = new CommonFixture();
         public UpdateCategoryInput GetUpdateCategoryInput(Guid? id = null)
            => new(
                id ?? Guid.NewGuid(),

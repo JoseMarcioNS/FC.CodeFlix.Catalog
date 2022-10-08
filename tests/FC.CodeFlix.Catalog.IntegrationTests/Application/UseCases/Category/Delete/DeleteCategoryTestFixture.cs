@@ -1,4 +1,4 @@
-﻿using FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Common;
+﻿using FC.CodeFlix.Catalog.SharedTests;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Delete
 {
@@ -8,5 +8,8 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
     }
     public class DeleteCategoryTestFixture : CategoryBaseFixture
     {
+        public CommonFixture CommonFixture;
+        public DeleteCategoryTestFixture()
+        => CommonFixture = new CommonFixture();
     }
 }

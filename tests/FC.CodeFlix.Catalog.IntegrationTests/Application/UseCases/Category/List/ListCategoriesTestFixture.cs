@@ -1,6 +1,6 @@
-﻿using FC.CodeFlix.Catalog.Application.UseCases.Category.List;
+﻿
 using FC.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Common;
+using FC.CodeFlix.Catalog.SharedTests;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.List
 {
@@ -10,6 +10,10 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Lis
     }
     public class ListCategoriesTestFixture : CategoryBaseFixture
     {
+        public CommonFixture CommonFixture;
+        public ListCategoriesTestFixture()
+        => CommonFixture = new CommonFixture();
+
         public List<DomainEntity.Category> CreateCategoriesWithNames(string[] names)
           => names.Select(n =>
           {

@@ -13,7 +13,7 @@
         public async Task Commit()
         {
             var repository = _fixture.CreateDbContext();
-            var categories = _fixture.GetListCategories();
+            var categories = _fixture.CategoryBaseFixture.GetListCategories();
             await repository.AddRangeAsync(categories);
             var unitOfwork = new UnitOfWorkInfra.UnitOfWork(repository);
 
@@ -28,7 +28,7 @@
         public async Task Rollback()
         {
             var repository = _fixture.CreateDbContext();
-            var categories = _fixture.GetListCategories();
+            var categories = _fixture.CategoryBaseFixture.GetListCategories();
             await repository.AddRangeAsync(categories);
             var unitOfwork = new UnitOfWorkInfra.UnitOfWork(repository);
 

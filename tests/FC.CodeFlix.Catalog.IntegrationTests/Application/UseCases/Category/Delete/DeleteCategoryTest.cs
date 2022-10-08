@@ -1,7 +1,6 @@
 ﻿using FC.CodeFlix.Catalog.Application.Excepitons;
 using FC.CodeFlix.Catalog.Application.UseCases.Category.Delete;
 using FC.CodeFlix.Catalog.Infra.Data.EF.Repositories;
-using FluentAssertions;
 
 namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Delete
 {
@@ -17,7 +16,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
         [Trait("Integration/Application", "DeleteCategoryTest - UseCases")]
         public async void DeleteCategoryOk()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var category = _fixture.GetValidCategory();
@@ -35,7 +34,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
         [Trait("Integration/Application", "DeleteCategoryTest - UseCases")]
         public async void ThrowExceptionWhenNotFoundCategory()
         {
-            var context = _fixture.CreateDbContext();
+            var context = _fixture.CommonFixture.CreateDbContext();
             var repository = new CategoryRepository(context);
             var unitOfWork = new UnitOfWork(context);
             var category = _fixture.GetValidCategory();
@@ -48,6 +47,6 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
 
         }
         public void Dispose()
-        => _fixture.CleanInMemoryDatabase();
+        => _fixture.CommonFixture.CleanInMemoryDatabase();
     }
 }
